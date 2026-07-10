@@ -1,0 +1,98 @@
+.section {
+  width: 100%;
+  padding: 8rem 1.5rem;
+  background-color: var(--bg-secondary);
+}
+
+.inner {
+  max-width: 64rem;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.badge {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--emerald-accent);
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 4rem;
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-top: 1px solid rgba(0, 0, 0, 0.05); /* Very subtle top border */
+}
+
+.rowContainer {
+  position: relative;
+}
+
+.rowBorder {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.05);
+  transform-origin: left;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem 0;
+}
+
+@media (min-width: 768px) {
+  .row {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 4rem;
+  }
+}
+
+.rowLabel {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  flex-basis: 200px;
+  flex-shrink: 0;
+}
+
+.rowValue {
+  font-size: 1.125rem;
+  color: var(--text-main);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .rowValue {
+    font-size: 1.25rem;
+  }
+}

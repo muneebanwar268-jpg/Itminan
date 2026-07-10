@@ -1,26 +1,75 @@
-@import "tailwindcss";
-
+/* CSS custom properties for use in plain CSS rules below */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FAFAFA; /* Warm White */
+  --bg-secondary: #F3F3F3; /* Very Light Neutral */
+  --bg-card: #FFFFFF; /* Pure White */
+  --gold-accent: #CFA356; /* Subtle luxury gold */
+  --soft-gold: #D8B575;
+  --text-main: #1A1A1A; /* Almost Black */
+  --text-muted: #737373; /* Neutral Gray */
+  --emerald-accent: #3A5C4C;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html, body {
+  width: 100%;
 }
 
 body {
+  background-color: var(--background);
+  color: var(--text-main);
+  overflow-x: hidden;
+  font-family: var(--font-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Lenis Customizations */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overflow: clip;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
   background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-card);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-accent);
 }

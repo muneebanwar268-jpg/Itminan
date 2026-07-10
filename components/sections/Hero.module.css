@@ -1,0 +1,161 @@
+.section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 8rem;
+  padding-bottom: 4rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--background);
+}
+
+.ambient {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background-color: rgba(207, 163, 86, 0.05); /* --gold-accent 5% */
+  border-radius: 9999px;
+  filter: blur(160px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.content {
+  max-width: 80rem;
+  margin: 0 auto;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  z-index: 10;
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .content {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    gap: 4rem;
+  }
+}
+
+.textContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .textContent {
+    align-items: flex-start;
+  }
+}
+
+.badge {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--gold-accent);
+  font-weight: 500;
+}
+
+.headline {
+  font-size: 3.5rem;
+  font-weight: 200;
+  letter-spacing: -0.03em;
+  color: var(--text-main);
+  line-height: 1.1;
+}
+
+@media (min-width: 1024px) {
+  .headline {
+    font-size: 6rem;
+  }
+}
+
+.headlineEm {
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.description {
+  color: var(--text-muted);
+  max-width: 28rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+@media (min-width: 1024px) {
+  .description {
+    font-size: 1.125rem;
+  }
+}
+
+.imageContainer {
+  flex: 1;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .imageContainer {
+    max-width: none;
+    flex: 1.2;
+    height: 600px;
+  }
+}
+
+.productImage {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.05));
+}
+
+.scrollIndicator {
+  max-width: 80rem;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--text-muted);
+  z-index: 10;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 2rem;
+  background-color: var(--text-muted);
+  transform-origin: top;
+  animation: stretch 2s cubic-bezier(0.8, 0, 0.2, 1) infinite;
+}
+
+@keyframes stretch {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  50.1% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}

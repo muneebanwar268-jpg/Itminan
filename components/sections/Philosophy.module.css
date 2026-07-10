@@ -1,0 +1,77 @@
+.section {
+  width: 100%;
+  min-height: 150vh; /* Extra height to allow scrolling for the animation */
+  padding: 0 1.5rem; /* px-6 */
+  background-color: var(--bg-secondary);
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.stickyContainer {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inner {
+  max-width: 64rem; /* max-w-5xl */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem; /* gap-12 */
+  text-align: center;
+}
+
+.badge {
+  font-size: 0.75rem; /* text-xs */
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--emerald-accent);
+  margin-bottom: 2rem;
+}
+
+.quoteContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 0.75rem;
+  row-gap: 0.5rem;
+}
+
+.word {
+  font-size: 2.5rem; /* text-4xl */
+  font-weight: 200; /* font-extralight */
+  letter-spacing: -0.025em;
+  color: var(--text-main);
+  line-height: 1.375; /* leading-snug */
+  will-change: opacity;
+  transform: translateZ(0); /* Force GPU acceleration */
+}
+
+@media (min-width: 768px) {
+  .word {
+    font-size: 4rem; /* text-6xl */
+  }
+}
+
+.bodyContainer {
+  margin-top: 4rem;
+  font-size: 1.125rem; /* text-lg */
+  color: var(--text-muted);
+  font-weight: 300; /* font-light */
+  line-height: 1.7;
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .bodyContainer {
+    font-size: 1.25rem; /* text-xl */
+  }
+}
