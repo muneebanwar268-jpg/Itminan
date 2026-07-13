@@ -7,24 +7,39 @@ import { ShieldCheck, Truck, RefreshCcw, ChevronDown, ChevronUp, Package, Batter
 import { useCartStore } from "@/store/cartStore";
 import styles from "./ProductClient.module.css";
 import { Specs } from "@/components/sections/Specs";
+import { ShopifyProduct } from "@/lib/shopify";
 
-const SIZES = ["7", "8", "9", "10", "11", "12"];
-const FINISHES = ["Rhodium", "Rose Gold", "Yellow Gold"];
+interface ProductClientProps {
+  product: ShopifyProduct;
+}
 
-export function ProductClient() {
-  const [selectedSize, setSelectedSize] = useState(SIZES[1]);
-  const [selectedFinish, setSelectedFinish] = useState(FINISHES[0]);
+export function ProductClient({ product }: ProductClientProps) {
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>(() => {
+    const initial: Record<string, string> = {};
+    product.options.forEach(opt => {
+      initial[opt.name] = opt.values[0];
+    });
+    return initial;
+  });
   const [openAccordion, setOpenAccordion] = useState<number | null>(0);
   const { addItem } = useCartStore();
 
+  const selectedVariant = product.variants.find(v => 
+    v.selectedOptions.every(opt => selectedOptions[opt.name] === opt.value)
+  ) || product.variants[0];
+
   const handleAddToCart = () => {
+    const finish = selectedOptions["Finish"] || selectedOptions["Color"] || selectedVariant?.selectedOptions.find(o => o.name.toLowerCase() === 'finish' || o.name.toLowerCase() === 'color')?.value || "";
+    const size = selectedOptions["Size"] || selectedOptions["Ring Size"] || selectedVariant?.selectedOptions.find(o => o.name.toLowerCase() === 'size' || o.name.toLowerCase() === 'ring size')?.value || "";
+
     addItem({
-      name: "Itminan Smart Tasbih",
-      price: 149,
+      name: product.title,
+      price: parseFloat(selectedVariant?.price?.amount || "149.00"),
       quantity: 1,
-      size: selectedSize,
-      finish: selectedFinish,
-      image: "/images/hero-tasbih.png" // using existing asset
+      size: size,
+      finish: finish,
+      image: selectedVariant?.image?.url || product.images[0]?.url || "/images/hero-tasbih.png",
+      variantId: selectedVariant?.id
     });
   };
 
@@ -40,8 +55,8 @@ export function ProductClient() {
           className={styles.gallery}
         >
           <Image
-            src="/images/hero-tasbih.png"
-            alt="Itminan Smart Tasbih"
+            src={selectedVariant?.image?.url || product.images[0]?.url || "/images/hero-tasbih.png"}
+            alt={selectedVariant?.image?.altText || product.title}
             width={800}
             height={800}
             className={styles.mainImage}
@@ -58,50 +73,44 @@ export function ProductClient() {
         >
           <div className={styles.header}>
             <span className={styles.badge}>Rhinestone Collection</span>
-            <h1 className={styles.title}>Itminan Smart Tasbih</h1>
-            <span className={styles.price}>$149.00 USD</span>
+            <h1 className={styles.title}>{product.title}</h1>
+            <span className={styles.price}>
+              {new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: selectedVariant?.price?.currencyCode || 'USD'
+              }).format(parseFloat(selectedVariant?.price?.amount || '149.00'))}
+            </span>
             <p className={styles.description}>
-              Crafted with precision and heavily embellished with sparkling crystals. 
-              The new Itminan is a premium smart tasbih counter designed to bring 
-              elegant tranquility to your daily remembrance.
+              {product.description}
             </p>
           </div>
 
           <div className={styles.options}>
-            <div className={styles.optionGroup}>
-              <span className={styles.optionLabel}>Finish: {selectedFinish}</span>
-              <div className={styles.buttonGrid}>
-                {FINISHES.map(finish => (
-                  <button
-                    key={finish}
-                    onClick={() => setSelectedFinish(finish)}
-                    className={selectedFinish === finish ? styles.optionBtnActive : styles.optionBtn}
-                  >
-                    {finish}
-                  </button>
-                ))}
+            {product.options.map(option => (
+              <div key={option.name} className={styles.optionGroup}>
+                <span className={styles.optionLabel}>{option.name}: {selectedOptions[option.name]}</span>
+                <div className={styles.buttonGrid}>
+                  {option.values.map(val => (
+                    <button
+                      key={val}
+                      onClick={() => setSelectedOptions(prev => ({ ...prev, [option.name]: val }))}
+                      className={selectedOptions[option.name] === val ? styles.optionBtnActive : styles.optionBtn}
+                    >
+                      {val}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            <div className={styles.optionGroup}>
-              <span className={styles.optionLabel}>Ring Size: {selectedSize}</span>
-              <div className={styles.buttonGrid}>
-                {SIZES.map(size => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={selectedSize === size ? styles.optionBtnActive : styles.optionBtn}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
 
           <div className={styles.actions}>
-            <button onClick={handleAddToCart} className={styles.addBtn}>
-              Add to Cart
+            <button 
+              onClick={handleAddToCart} 
+              className={styles.addBtn}
+              disabled={!selectedVariant?.availableForSale}
+            >
+              {selectedVariant?.availableForSale ? "Add to Cart" : "Out of Stock"}
             </button>
           </div>
 

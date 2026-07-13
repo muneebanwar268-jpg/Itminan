@@ -9,6 +9,7 @@ export interface CartItem {
   size: string;
   finish: string;
   image: string;
+  variantId?: string; // Shopify Variant GID
 }
 
 interface CartState {

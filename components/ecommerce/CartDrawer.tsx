@@ -9,6 +9,31 @@ import styles from "./CartDrawer.module.css";
 export function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeItem, getTotalPrice } = useCartStore();
   const [mounted, setMounted] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
+  const handleCheckout = async () => {
+    setIsRedirecting(true);
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ items }),
+      });
+      const data = await response.json();
+      if (data.checkoutUrl) {
+        window.location.href = data.checkoutUrl;
+      } else {
+        alert(data.error || "Failed to initiate checkout.");
+        setIsRedirecting(false);
+      }
+    } catch (err) {
+      console.error("Checkout error:", err);
+      alert("An error occurred while redirecting to checkout.");
+      setIsRedirecting(false);
+    }
+  };
 
   // Prevent hydration mismatch for zustand persist
   useEffect(() => {
@@ -116,9 +141,10 @@ export function CartDrawer() {
                 </div>
                 <button 
                   className={styles.checkoutBtn}
-                  onClick={() => alert("Checkout flow is mocked for this demo.")}
+                  onClick={handleCheckout}
+                  disabled={isRedirecting}
                 >
-                  Proceed to Checkout <ArrowRight size={16} />
+                  {isRedirecting ? "Redirecting..." : "Proceed to Checkout"} <ArrowRight size={16} />
                 </button>
               </div>
             )}
