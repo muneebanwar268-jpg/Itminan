@@ -1,16 +1,23 @@
-/* CartDrawer — ITMINAAN */
 .overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(32, 32, 29, 0.35);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
   z-index: 200;
   display: flex;
   justify-content: flex-end;
 }
 
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(32, 32, 29, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1;
+}
+
 .drawer {
+  position: relative;
+  z-index: 10;
   width: 100%;
   max-width: 420px;
   height: 100%;

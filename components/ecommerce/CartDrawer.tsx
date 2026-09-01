@@ -64,7 +64,7 @@ export function CartDrawer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={closeCart}
-            style={{ position: "absolute", inset: 0 }}
+            className={styles.backdrop}
           />
 
           {/* Drawer */}
@@ -74,10 +74,19 @@ export function CartDrawer() {
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className={styles.drawer}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className={styles.header}>
               <h2 className={styles.title}>Your Cart</h2>
-              <button onClick={closeCart} className={styles.closeBtn}>
+              <button 
+                type="button" 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  closeCart();
+                }} 
+                className={styles.closeBtn}
+                aria-label="Close cart"
+              >
                 <X size={20} strokeWidth={1.5} />
               </button>
             </div>
@@ -107,22 +116,36 @@ export function CartDrawer() {
                       <div className={styles.itemActions}>
                         <div className={styles.quantityControls}>
                           <button 
+                            type="button"
                             className={styles.qtyBtn}
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              updateQuantity(item.id, item.quantity - 1);
+                            }}
+                            aria-label="Decrease quantity"
                           >
                             <Minus size={12} />
                           </button>
                           <span className={styles.qtyValue}>{item.quantity}</span>
                           <button 
+                            type="button"
                             className={styles.qtyBtn}
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              updateQuantity(item.id, item.quantity + 1);
+                            }}
+                            aria-label="Increase quantity"
                           >
                             <Plus size={12} />
                           </button>
                         </div>
                         <button 
+                          type="button"
                           className={styles.removeBtn}
-                          onClick={() => removeItem(item.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeItem(item.id);
+                          }}
                         >
                           Remove
                         </button>
