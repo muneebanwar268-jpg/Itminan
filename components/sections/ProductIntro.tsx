@@ -4,28 +4,69 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
+import { useRouter } from "next/navigation";
+import type { StoreProduct } from "@/lib/shopify-admin";
 import styles from "./ProductIntro.module.css";
 
-const images = [
+const fallbackImages = [
   { src: "/images/bag-front.jpg",      alt: "Handcrafted Handbag — Front View" },
   { src: "/images/bag-top.jpg",        alt: "Handcrafted Handbag — Top View" },
   { src: "/images/bag-collection.jpg", alt: "Handcrafted Handbag — Full Collection" },
   { src: "/images/handbag-detail.jpg", alt: "Handcrafted Handbag — Detail" },
 ];
 
-export function ProductIntro() {
+interface ProductIntroProps {
+  initialProduct?: StoreProduct;
+}
+
+export function ProductIntro({ initialProduct }: ProductIntroProps) {
+  const router = useRouter();
+  const [product, setProduct] = useState<StoreProduct | undefined>(initialProduct);
   const [selected, setSelected] = useState(0);
   const { addItem, openCart } = useCartStore();
 
+  React.useEffect(() => {
+    if (!initialProduct) {
+      fetch("/api/products")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.product) setProduct(data.product);
+        })
+        .catch(() => {});
+    }
+  }, [initialProduct]);
+
+  const title = product?.title || "Handcrafted Handbag";
+  const description = product?.description || "A beautifully handcrafted handbag featuring traditional block printing, intricate mirror work and tassel detailing. Designed to be easy to carry and add a distinctive touch to your look.";
+  const price = product?.price || 1299;
+
+  const images = (product?.images && product.images.length > 0)
+    ? product.images.map((img) => ({ src: img.url, alt: img.altText || title }))
+    : fallbackImages;
+
+  const currentImage = images[selected] || images[0];
+  const primaryVariant = product?.variants?.[0];
+
   const handleAddToCart = () => {
     addItem({
-      id: "itminaan-handbag",
-      name: "Handcrafted Handbag",
-      price: 1299,
+      id: primaryVariant?.id || product?.id || "itminaan-handbag",
+      name: title,
+      price: price,
       quantity: 1,
-      image: "/images/bag-front.jpg",
+      image: currentImage.src,
     });
     openCart();
+  };
+
+  const handleBuyNow = () => {
+    addItem({
+      id: primaryVariant?.id || product?.id || "itminaan-handbag",
+      name: title,
+      price: price,
+      quantity: 1,
+      image: currentImage.src,
+    });
+    router.push("/checkout");
   };
 
   return (
@@ -42,12 +83,13 @@ export function ProductIntro() {
             transition={{ duration: 0.35, ease: "easeOut" }}
           >
             <Image
-              src={images[selected].src}
-              alt={images[selected].alt}
+              src={currentImage.src}
+              alt={currentImage.alt}
               width={600}
               height={600}
               className={styles.mainImage}
               priority
+              unoptimized={currentImage.src.startsWith('http')}
             />
           </motion.div>
 
@@ -67,6 +109,7 @@ export function ProductIntro() {
                   width={100}
                   height={100}
                   className={styles.thumbImg}
+                  unoptimized={img.src.startsWith('http')}
                 />
               </button>
             ))}
@@ -82,15 +125,13 @@ export function ProductIntro() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <span className={styles.tag}>ITMINAAN Collection</span>
-          <h2 className={styles.productName}>Handcrafted Handbag</h2>
+          <h2 className={styles.productName}>{title}</h2>
           <p className={styles.description}>
-            A beautifully handcrafted handbag featuring traditional block printing, 
-            intricate mirror work and tassel detailing. Designed to be easy to carry 
-            and add a distinctive touch to your look.
+            {description}
           </p>
 
           <div className={styles.priceRow}>
-            <span className={styles.price}>Rs. 1,299</span>
+            <span className={styles.price}>Rs. {price.toLocaleString()}</span>
             <span className={styles.priceSub}>COD Available</span>
           </div>
 
@@ -124,7 +165,7 @@ export function ProductIntro() {
             </motion.button>
             <motion.button
               type="button"
-              onClick={handleAddToCart}
+              onClick={handleBuyNow}
               className={styles.btnBuy}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}

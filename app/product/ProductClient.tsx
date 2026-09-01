@@ -3,11 +3,13 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Truck, Package, ChevronDown, Palette, Sparkles, Gem, Ruler, ShieldCheck } from "lucide-react";
+import { Truck, ChevronDown, Palette, Sparkles, Gem, Ruler, ShieldCheck } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
+import { useRouter } from "next/navigation";
+import type { StoreProduct } from "@/lib/shopify-admin";
 import styles from "./ProductClient.module.css";
 
-const productImages = [
+const fallbackImages = [
   { src: "/images/bag-front.jpg",      alt: "Handcrafted Handbag — Front View" },
   { src: "/images/bag-top.jpg",        alt: "Handcrafted Handbag — Top View" },
   { src: "/images/bag-collection.jpg", alt: "Handcrafted Handbag — Collection" },
@@ -41,21 +43,49 @@ const productFeatures = [
   },
 ];
 
-export function ProductClient() {
+interface ProductClientProps {
+  product?: StoreProduct;
+}
+
+export function ProductClient({ product }: ProductClientProps) {
+  const router = useRouter();
   const [selectedImage, setSelectedImage] = useState(0);
   const [qty, setQty] = useState(1);
   const [openIndex, setOpenIndex] = useState<number | null>(0); // First open by default
   const { addItem, openCart } = useCartStore();
 
+  const title = product?.title || "Handcrafted Handbag";
+  const description = product?.description || "A celebration of traditional Pakistani artistry. Crafted with authentic block printing, intricate mirror work, and opulent gold tassel detailing — designed to elevate every occasion.";
+  const price = product?.price || 1299;
+  const compareAtPrice = product?.compareAtPrice || (price > 1000 ? Math.round(price * 1.45) : 1899);
+  
+  const productImages = (product?.images && product.images.length > 0)
+    ? product.images.map((img) => ({ src: img.url, alt: img.altText || title }))
+    : fallbackImages;
+
+  const currentImage = productImages[selectedImage] || productImages[0];
+  const primaryVariant = product?.variants?.[0];
+
   const handleAddToCart = () => {
     addItem({
-      id: "itminaan-handbag",
-      name: "Handcrafted Handbag",
-      price: 1299,
+      id: primaryVariant?.id || product?.id || "itminaan-handbag",
+      name: title,
+      price: price,
       quantity: qty,
-      image: productImages[0].src,
+      image: currentImage.src,
     });
     openCart();
+  };
+
+  const handleBuyNow = () => {
+    addItem({
+      id: primaryVariant?.id || product?.id || "itminaan-handbag",
+      name: title,
+      price: price,
+      quantity: qty,
+      image: currentImage.src,
+    });
+    router.push("/checkout");
   };
 
   return (
@@ -72,12 +102,13 @@ export function ProductClient() {
             transition={{ duration: 0.3, ease: "easeOut" }}
           >
             <Image
-              src={productImages[selectedImage].src}
-              alt={productImages[selectedImage].alt}
+              src={currentImage.src}
+              alt={currentImage.alt}
               width={700}
               height={700}
               className={styles.mainImage}
               priority
+              unoptimized={currentImage.src.startsWith('http')}
             />
           </motion.div>
           <div className={styles.thumbs}>
@@ -88,7 +119,14 @@ export function ProductClient() {
                 className={`${styles.thumb} ${selectedImage === i ? styles.thumbActive : ""}`}
                 aria-label={img.alt}
               >
-                <Image src={img.src} alt={img.alt} width={100} height={100} className={styles.thumbImg} />
+                <Image 
+                  src={img.src} 
+                  alt={img.alt} 
+                  width={100} 
+                  height={100} 
+                  className={styles.thumbImg} 
+                  unoptimized={img.src.startsWith('http')}
+                />
               </button>
             ))}
           </div>
@@ -105,17 +143,18 @@ export function ProductClient() {
             <span className={styles.tag}>ITMINAAN Heritage Collection</span>
           </div>
 
-          <h1 className={styles.title}>Handcrafted Handbag</h1>
+          <h1 className={styles.title}>{title}</h1>
           <p className={styles.desc}>
-            A celebration of traditional Pakistani artistry. Crafted with authentic block printing, 
-            intricate mirror work, and opulent gold tassel detailing — designed to elevate every occasion.
+            {description}
           </p>
 
           {/* Price */}
           <div className={styles.priceRow}>
             <div className={styles.priceWrapper}>
-              <span className={styles.price}>Rs. 1,299</span>
-              <span className={styles.originalPrice}>Rs. 1,899</span>
+              <span className={styles.price}>Rs. {price.toLocaleString()}</span>
+              {compareAtPrice > price && (
+                <span className={styles.originalPrice}>Rs. {compareAtPrice.toLocaleString()}</span>
+              )}
             </div>
             <span className={styles.codBadge}>✓ Cash on Delivery Available</span>
           </div>
@@ -135,7 +174,7 @@ export function ProductClient() {
             <motion.button onClick={handleAddToCart} className={styles.btnCart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               ADD TO CART
             </motion.button>
-            <motion.button onClick={handleAddToCart} className={styles.btnBuy} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <motion.button onClick={handleBuyNow} className={styles.btnBuy} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               ORDER NOW (COD)
             </motion.button>
           </div>

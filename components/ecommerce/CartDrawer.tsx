@@ -6,33 +6,16 @@ import { X, Minus, Plus, ShoppingBag, ArrowRight } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import styles from "./CartDrawer.module.css";
 
+import { useRouter } from "next/navigation";
+
 export function CartDrawer() {
+  const router = useRouter();
   const { items, isOpen, closeCart, updateQuantity, removeItem, getTotalPrice } = useCartStore();
   const [mounted, setMounted] = useState(false);
-  const [isRedirecting, setIsRedirecting] = useState(false);
 
-  const handleCheckout = async () => {
-    setIsRedirecting(true);
-    try {
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ items }),
-      });
-      const data = await response.json();
-      if (data.checkoutUrl) {
-        window.location.href = data.checkoutUrl;
-      } else {
-        alert(data.error || "Failed to initiate checkout.");
-        setIsRedirecting(false);
-      }
-    } catch (err) {
-      console.error("Checkout error:", err);
-      alert("An error occurred while redirecting to checkout.");
-      setIsRedirecting(false);
-    }
+  const handleCheckout = () => {
+    closeCart();
+    router.push("/checkout");
   };
 
   // Prevent hydration mismatch for zustand persist
@@ -165,9 +148,8 @@ export function CartDrawer() {
                 <button 
                   className={styles.checkoutBtn}
                   onClick={handleCheckout}
-                  disabled={isRedirecting}
                 >
-                  {isRedirecting ? "Processing..." : "Order Now (COD)"} <ArrowRight size={16} />
+                  Proceed to Checkout (COD) <ArrowRight size={16} />
                 </button>
               </div>
             )}
