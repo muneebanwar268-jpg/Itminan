@@ -1,21 +1,24 @@
 "use client";
 
 import React from "react";
-import styles from "./page.module.css";
 import { Hero } from "@/components/sections/Hero";
-import { Philosophy } from "@/components/sections/Philosophy";
-import { Features } from "@/components/sections/Features";
-import { Specs } from "@/components/sections/Specs";
-import { Purchase } from "@/components/sections/Purchase";
+import { ProductIntro } from "@/components/sections/ProductIntro";
+import { WhyUs } from "@/components/sections/WhyUs";
+import { Reviews } from "@/components/sections/Reviews";
+import { FAQ } from "@/components/sections/FAQ";
+import { FinalCTA } from "@/components/sections/FinalCTA";
+import { Footer } from "@/components/sections/Footer";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
+    <main>
       <Hero />
-      <Philosophy />
-      <Features />
-      <Specs />
-      <Purchase />
+      <ProductIntro />
+      <WhyUs />
+      <Reviews />
+      <FAQ />
+      <FinalCTA />
+      <Footer />
     </main>
   );
 }

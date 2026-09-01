@@ -98,10 +98,10 @@ export function CartDrawer() {
                         <div>
                           <h3 className={styles.itemName}>{item.name}</h3>
                           <p className={styles.itemVariant}>
-                            {item.finish} • Size {item.size}
+                            Handcrafted Handbag
                           </p>
                         </div>
-                        <span className={styles.itemPrice}>${item.price}</span>
+                        <span className={styles.itemPrice}>Rs. {item.price.toLocaleString()}</span>
                       </div>
 
                       <div className={styles.itemActions}>
@@ -137,14 +137,14 @@ export function CartDrawer() {
               <div className={styles.footer}>
                 <div className={styles.subtotalRow}>
                   <span className={styles.subtotalLabel}>Subtotal</span>
-                  <span className={styles.subtotalValue}>${getTotalPrice()}</span>
+                  <span className={styles.subtotalValue}>Rs. {getTotalPrice().toLocaleString()}</span>
                 </div>
                 <button 
                   className={styles.checkoutBtn}
                   onClick={handleCheckout}
                   disabled={isRedirecting}
                 >
-                  {isRedirecting ? "Redirecting..." : "Proceed to Checkout"} <ArrowRight size={16} />
+                  {isRedirecting ? "Processing..." : "Order Now (COD)"} <ArrowRight size={16} />
                 </button>
               </div>
             )}

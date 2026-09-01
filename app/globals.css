@@ -1,16 +1,31 @@
-/* CSS custom properties for use in plain CSS rules below */
+/* ITMINAAN — Handcrafted Pakistani Handbag Brand */
+/* Color System */
 :root {
-  --background: #FAFAFA; /* Warm White */
-  --bg-secondary: #F3F3F3; /* Very Light Neutral */
-  --bg-card: #FFFFFF; /* Pure White */
-  --gold-accent: #CFA356; /* Subtle luxury gold */
-  --soft-gold: #D8B575;
-  --text-main: #1A1A1A; /* Almost Black */
-  --text-muted: #737373; /* Neutral Gray */
-  --emerald-accent: #3A5C4C;
+  --ink:          #20201D; /* Deep ink dark — nav bg, buttons, footer */
+  --cream:        #F5F1E8; /* Warm cream — hero, product, review bg */
+  --espresso:     #332923; /* Deep espresso — final CTA bg */
+  --sand:         #DED5C8; /* Warm sand — supporting text on dark */
+  --white:        #FFFFFF;
+  --off-white:    #FAFAF7;
+
+  /* Heritage accent colors pulled from the bag itself */
+  --gold:         #C8943A; /* Warm gold tassel tone */
+  --magenta:      #B5305A; /* Rich magenta from block print */
+  --navy:         #1E2A4A; /* Deep navy from the fabric */
+
+  /* Text */
+  --text-dark:    #20201D;
+  --text-muted:   #6B6560;
+  --text-light:   #FFFFFF;
+  --text-sand:    #DED5C8;
+
+  /* Functional */
+  --border-cream: rgba(32, 32, 29, 0.1);
+  --border-dark:  rgba(255, 255, 255, 0.12);
 }
 
-* {
+/* Reset */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -18,13 +33,14 @@
 
 html, body {
   width: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--text-main);
+  background-color: var(--cream);
+  color: var(--text-dark);
   overflow-x: hidden;
-  font-family: var(--font-sans), sans-serif;
+  font-family: var(--font-sans), 'Outfit', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -34,7 +50,12 @@ a {
   text-decoration: none;
 }
 
-/* Lenis Customizations */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Lenis Smooth Scroll */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -57,19 +78,20 @@ html.lenis body {
 }
 
 /* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink); }
+
+/* Shared Utilities */
+.section-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--bg-card);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--gold-accent);
+@media (max-width: 768px) {
+  .section-inner {
+    padding: 0 16px;
+  }
 }

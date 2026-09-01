@@ -3,235 +3,208 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShieldCheck, Truck, RefreshCcw, ChevronDown, ChevronUp, Package, BatteryCharging, Fingerprint, Star } from "lucide-react";
+import { Truck, Package, ChevronDown, Palette, Sparkles, Gem, Ruler, ShieldCheck } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import styles from "./ProductClient.module.css";
-import { Specs } from "@/components/sections/Specs";
-import { ShopifyProduct } from "@/lib/shopify";
 
-interface ProductClientProps {
-  product: ShopifyProduct;
-}
+const productImages = [
+  { src: "/images/bag-front.jpg",      alt: "Handcrafted Handbag — Front View" },
+  { src: "/images/bag-top.jpg",        alt: "Handcrafted Handbag — Top View" },
+  { src: "/images/bag-collection.jpg", alt: "Handcrafted Handbag — Collection" },
+  { src: "/images/handbag-detail.jpg", alt: "Handcrafted Handbag — Detail" },
+];
 
-export function ProductClient({ product }: ProductClientProps) {
-  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>(() => {
-    const initial: Record<string, string> = {};
-    product.options.forEach(opt => {
-      initial[opt.name] = opt.values[0];
-    });
-    return initial;
-  });
-  const [openAccordion, setOpenAccordion] = useState<number | null>(0);
-  const { addItem } = useCartStore();
+const productFeatures = [
+  { 
+    id: "craft",
+    icon: Palette,
+    title: "Traditional Block Printing", 
+    desc: "Each handbag features authentic Pakistani block printing — a centuries-old heritage craft with vibrant geometric & floral motifs." 
+  },
+  { 
+    id: "shisha",
+    icon: Sparkles,
+    title: "Mirror & Shisha Work", 
+    desc: "Intricately hand-embroidered shisha mirror work and shimmering bead accents that reflect light with subtle radiance." 
+  },
+  { 
+    id: "tassels",
+    icon: Gem,
+    title: "Gold Tassel & Pearl Detailing", 
+    desc: "Accented with rich gold metallic tassels and delicate beaded edges for an opulent festive finish." 
+  },
+  { 
+    id: "dimensions",
+    icon: Ruler,
+    title: "Size & Dimensions", 
+    desc: "Measures ~10\" × 10\". Perfectly sized to carry your smartphone, cards, makeup, and daily essentials with effortless elegance." 
+  },
+];
 
-  const selectedVariant = product.variants.find(v => 
-    v.selectedOptions.every(opt => selectedOptions[opt.name] === opt.value)
-  ) || product.variants[0];
+export function ProductClient() {
+  const [selectedImage, setSelectedImage] = useState(0);
+  const [qty, setQty] = useState(1);
+  const [openIndex, setOpenIndex] = useState<number | null>(0); // First open by default
+  const { addItem, toggleCart } = useCartStore();
 
   const handleAddToCart = () => {
-    const finish = selectedOptions["Finish"] || selectedOptions["Color"] || selectedVariant?.selectedOptions.find(o => o.name.toLowerCase() === 'finish' || o.name.toLowerCase() === 'color')?.value || "";
-    const size = selectedOptions["Size"] || selectedOptions["Ring Size"] || selectedVariant?.selectedOptions.find(o => o.name.toLowerCase() === 'size' || o.name.toLowerCase() === 'ring size')?.value || "";
-
     addItem({
-      name: product.title,
-      price: parseFloat(selectedVariant?.price?.amount || "149.00"),
-      quantity: 1,
-      size: size,
-      finish: finish,
-      image: selectedVariant?.image?.url || product.images[0]?.url || "/images/hero-tasbih.png",
-      variantId: selectedVariant?.id
+      id: "itminaan-handbag",
+      name: "Handcrafted Handbag",
+      price: 1299,
+      quantity: qty,
+      image: productImages[0].src,
     });
+    toggleCart();
   };
 
   return (
     <section className={styles.section}>
       <div className={styles.inner}>
-        
-        {/* Sticky Gallery */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className={styles.gallery}
-        >
-          <Image
-            src={selectedVariant?.image?.url || product.images[0]?.url || "/images/hero-tasbih.png"}
-            alt={selectedVariant?.image?.altText || product.title}
-            width={800}
-            height={800}
-            className={styles.mainImage}
-            priority
-          />
-        </motion.div>
 
-        {/* Product Details */}
-        <motion.div 
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className={styles.details}
-        >
-          <div className={styles.header}>
-            <span className={styles.badge}>Rhinestone Collection</span>
-            <h1 className={styles.title}>{product.title}</h1>
-            <span className={styles.price}>
-              {new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: selectedVariant?.price?.currencyCode || 'USD'
-              }).format(parseFloat(selectedVariant?.price?.amount || '149.00'))}
-            </span>
-            <p className={styles.description}>
-              {product.description}
-            </p>
-          </div>
-
-          <div className={styles.options}>
-            {product.options.map(option => (
-              <div key={option.name} className={styles.optionGroup}>
-                <span className={styles.optionLabel}>{option.name}: {selectedOptions[option.name]}</span>
-                <div className={styles.buttonGrid}>
-                  {option.values.map(val => (
-                    <button
-                      key={val}
-                      onClick={() => setSelectedOptions(prev => ({ ...prev, [option.name]: val }))}
-                      className={selectedOptions[option.name] === val ? styles.optionBtnActive : styles.optionBtn}
-                    >
-                      {val}
-                    </button>
-                  ))}
-                </div>
-              </div>
+        {/* ── Left: Gallery ── */}
+        <div className={styles.gallery}>
+          <motion.div
+            key={selectedImage}
+            className={styles.mainWrap}
+            initial={{ opacity: 0.85, scale: 0.99 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
+            <Image
+              src={productImages[selectedImage].src}
+              alt={productImages[selectedImage].alt}
+              width={700}
+              height={700}
+              className={styles.mainImage}
+              priority
+            />
+          </motion.div>
+          <div className={styles.thumbs}>
+            {productImages.map((img, i) => (
+              <button
+                key={i}
+                onClick={() => setSelectedImage(i)}
+                className={`${styles.thumb} ${selectedImage === i ? styles.thumbActive : ""}`}
+                aria-label={img.alt}
+              >
+                <Image src={img.src} alt={img.alt} width={100} height={100} className={styles.thumbImg} />
+              </button>
             ))}
           </div>
+        </div>
 
-          <div className={styles.actions}>
-            <button 
-              onClick={handleAddToCart} 
-              className={styles.addBtn}
-              disabled={!selectedVariant?.availableForSale}
-            >
-              {selectedVariant?.availableForSale ? "Add to Cart" : "Out of Stock"}
-            </button>
+        {/* ── Right: Details ── */}
+        <motion.div
+          className={styles.details}
+          initial={{ opacity: 0, x: 24 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className={styles.badgeRow}>
+            <span className={styles.tag}>ITMINAAN Heritage Collection</span>
           </div>
 
+          <h1 className={styles.title}>Handcrafted Handbag</h1>
+          <p className={styles.desc}>
+            A celebration of traditional Pakistani artistry. Crafted with authentic block printing, 
+            intricate mirror work, and opulent gold tassel detailing — designed to elevate every occasion.
+          </p>
+
+          {/* Price */}
+          <div className={styles.priceRow}>
+            <div className={styles.priceWrapper}>
+              <span className={styles.price}>Rs. 1,299</span>
+              <span className={styles.originalPrice}>Rs. 1,899</span>
+            </div>
+            <span className={styles.codBadge}>✓ Cash on Delivery Available</span>
+          </div>
+
+          {/* Quantity */}
+          <div className={styles.qtyRow}>
+            <span className={styles.qtyLabel}>Quantity</span>
+            <div className={styles.qtyControls}>
+              <button onClick={() => setQty(Math.max(1, qty - 1))} className={styles.qtyBtn} aria-label="Decrease quantity">−</button>
+              <span className={styles.qtyValue}>{qty}</span>
+              <button onClick={() => setQty(qty + 1)} className={styles.qtyBtn} aria-label="Increase quantity">+</button>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className={styles.actions}>
+            <motion.button onClick={handleAddToCart} className={styles.btnCart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              ADD TO CART
+            </motion.button>
+            <motion.button onClick={handleAddToCart} className={styles.btnBuy} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+              ORDER NOW (COD)
+            </motion.button>
+          </div>
+
+          {/* Trust Highlights */}
           <div className={styles.benefits}>
             <div className={styles.benefitItem}>
-              <Truck size={18} className={styles.benefitIcon} />
-              <span>Complimentary worldwide shipping</span>
+              <Truck size={16} className={styles.benefitIcon} />
+              <span>Free COD Delivery across Pakistan (3–5 Working Days)</span>
             </div>
             <div className={styles.benefitItem}>
-              <ShieldCheck size={18} className={styles.benefitIcon} />
-              <span>2-Year comprehensive warranty</span>
-            </div>
-            <div className={styles.benefitItem}>
-              <RefreshCcw size={18} className={styles.benefitIcon} />
-              <span>30-Day hassle-free returns</span>
+              <ShieldCheck size={16} className={styles.benefitIcon} />
+              <span>100% Quality Checked &amp; Handcrafted Assurance</span>
             </div>
           </div>
 
-          <div className={styles.accordion}>
-            {[
-              { 
-                title: "Materials & Care", 
-                content: "Crafted from aerospace-grade zinc alloy, encrusted with brilliant, hand-set premium crystals. Wipe clean with a soft, dry microfiber cloth. Avoid prolonged exposure to harsh chemicals or extreme temperatures to maintain the brilliant finish."
-              },
-              { 
-                title: "Shipping & Returns", 
-                content: "We offer complimentary express shipping worldwide. Orders are typically processed within 24 hours. If you are not completely satisfied, you may return the device within 30 days of receipt in its original, unopened packaging for a full refund."
-              },
-              { 
-                title: "Dimensions", 
-                content: "Weighing precisely 7.8 grams, the Itminan ring is engineered for a lightweight, balanced profile that is virtually unnoticeable during daily wear. The OLED screen measures 0.42 inches diagonally."
-              }
-            ].map((item, i) => (
-              <div key={i} className={styles.accordionItem}>
-                <button 
-                  className={styles.accordionHeader}
-                  onClick={() => setOpenAccordion(openAccordion === i ? null : i)}
-                >
-                  {item.title}
-                  {openAccordion === i ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                </button>
-                <AnimatePresence>
-                  {openAccordion === i && (
-                    <motion.div 
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      style={{ overflow: "hidden" }}
+          {/* Luxury Accordion Specs */}
+          <div className={styles.accordionContainer}>
+            <h3 className={styles.accordionHeading}>Product Specifications</h3>
+            <div className={styles.accordionList}>
+              {productFeatures.map((item, i) => {
+                const IconComponent = item.icon;
+                const isOpen = openIndex === i;
+                return (
+                  <div key={item.id} className={`${styles.accordionItem} ${isOpen ? styles.accordionItemOpen : ""}`}>
+                    <button
+                      type="button"
+                      className={styles.accordionHeader}
+                      onClick={() => setOpenIndex(isOpen ? null : i)}
+                      aria-expanded={isOpen}
                     >
-                      <div className={styles.accordionContent}>
-                        {item.content}
+                      <div className={styles.accordionTitleGroup}>
+                        <div className={styles.iconCircle}>
+                          <IconComponent size={15} />
+                        </div>
+                        <span className={styles.accordionTitle}>{item.title}</span>
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
+                      <motion.span
+                        animate={{ rotate: isOpen ? 180 : 0 }}
+                        transition={{ duration: 0.25, ease: "easeInOut" }}
+                        className={styles.chevronWrapper}
+                      >
+                        <ChevronDown size={17} strokeWidth={1.75} />
+                      </motion.span>
+                    </button>
+                    
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <motion.div
+                          key="content"
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                          className={styles.accordionBody}
+                        >
+                          <p className={styles.accordionDesc}>{item.desc}</p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
         </motion.div>
+
       </div>
-
-      <div className={styles.extendedContent}>
-        {/* Unboxing Section */}
-        <div className={styles.unboxing}>
-          <h2 className={styles.unboxingTitle}>The complete experience.</h2>
-          <div className={styles.unboxingGrid}>
-            <div className={styles.unboxingItem}>
-              <Fingerprint className={styles.unboxingIcon} strokeWidth={1} />
-              <span className={styles.unboxingLabel}>The Ring</span>
-              <p className={styles.unboxingDesc}>The smart tasbih, carefully resting in its presentation slot.</p>
-            </div>
-            <div className={styles.unboxingItem}>
-              <Package className={styles.unboxingIcon} strokeWidth={1} />
-              <span className={styles.unboxingLabel}>Leather Vault</span>
-              <p className={styles.unboxingDesc}>A premium magnetic charging case covered in soft-touch leather.</p>
-            </div>
-            <div className={styles.unboxingItem}>
-              <BatteryCharging className={styles.unboxingIcon} strokeWidth={1} />
-              <span className={styles.unboxingLabel}>Braided Cable</span>
-              <p className={styles.unboxingDesc}>A durable USB-C charging cable designed to last.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Reviews Section */}
-        <div className={styles.reviews}>
-          <h2 className={styles.reviewsTitle}>Voices of tranquility.</h2>
-          <div className={styles.reviewGrid}>
-            {[
-              {
-                text: "An incredibly elegant device. The haptic feedback allows me to completely focus without ever needing to look down.",
-                author: "Sarah A."
-              },
-              {
-                text: "The crystal finish is absolutely stunning. It looks like a piece of high-end jewelry, but functions flawlessly as a smart tasbih.",
-                author: "Omar K."
-              },
-              {
-                text: "I love the leather charging vault. It feels incredibly premium and makes traveling with the ring so much easier.",
-                author: "Fatima R."
-              }
-            ].map((review, i) => (
-              <div key={i} className={styles.reviewCard}>
-                <div className={styles.stars}>
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                </div>
-                <p className={styles.reviewText}>"{review.text}"</p>
-                <span className={styles.reviewAuthor}>{review.author}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Embedded Specs Section */}
-      <Specs />
     </section>
   );
 }

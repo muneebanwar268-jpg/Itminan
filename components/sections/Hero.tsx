@@ -1,82 +1,97 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import styles from "./Hero.module.css";
 
 export function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
   return (
-    <section
-      id="hero"
-      ref={containerRef}
-      className={styles.section}
-    >
-      <div className={styles.ambient} />
+    <section id="hero" className={styles.section}>
+      {/* Subtle background texture overlay */}
+      <div className={styles.texture} aria-hidden />
 
-      <div className={styles.content}>
-        <div className={styles.textContent}>
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className={styles.badge}
-          >
-            The Rhinestone Collection
-          </motion.span>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className={styles.headline}
-          >
-            Mindfulness, <br />
-            <span className={styles.headlineEm}>in every count.</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className={styles.description}
-          >
-            Crafted with precision and heavily embellished with sparkling crystals. 
-            The new Itminan is a premium smart tasbih counter designed to bring 
-            elegant tranquility to your daily remembrance.
-          </motion.p>
-        </div>
-
+      <div className={styles.inner}>
+        {/* Left product image */}
         <motion.div
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className={styles.imageContainer}
+          className={styles.imageLeft}
+          initial={{ opacity: 0, x: -40, scale: 1.02 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          transition={{ duration: 1.1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
-          <Image
-            src="/images/hero-tasbih.png"
-            alt="Luxury Rhinestone Tasbih"
-            width={800}
-            height={800}
-            className={styles.productImage}
-            priority
-          />
-          <a href="/product" className={styles.ctaPrimary}>
-            Acquire
-          </a>
+          <div className={styles.imageWrap}>
+            <Image
+              src="/images/bag-front.jpg"
+              alt="ITMINAAN Handcrafted Handbag — Front View"
+              width={520}
+              height={520}
+              className={styles.productImg}
+              priority
+            />
+          </div>
+        </motion.div>
+
+        {/* Center text */}
+        <motion.div
+          className={styles.centerText}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <span className={styles.eyebrow}>Handcrafted in Pakistan</span>
+          <h1 className={styles.headline}>
+            Carry<br />
+            <em>Culture.</em>
+          </h1>
+          {/* <p className={styles.sub}>
+            Traditional block printing, mirror work &amp; tassel detailing — beautifully crafted for every occasion.
+          </p> */}
+          <Link href="/product" className={styles.cta}>
+            <motion.span
+              style={{ display: "inline-flex", alignItems: "center" }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              SHOP NOW →
+            </motion.span>
+          </Link>
+          {/* <span className={styles.price}>Rs. 1,299</span> */}
+        </motion.div>
+
+        {/* Right product image */}
+        <motion.div
+          className={styles.imageRight}
+          initial={{ opacity: 0, x: 40, scale: 1.02 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          transition={{ duration: 1.1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className={styles.imageWrap}>
+            <Image
+              src="/images/bag-collection.jpg"
+              alt="ITMINAAN Handcrafted Handbag — Collection"
+              width={520}
+              height={520}
+              className={styles.productImg}
+              priority
+            />
+          </div>
         </motion.div>
       </div>
 
+      {/* Scroll indicator */}
       <motion.div
+        className={styles.scroll}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.2 }}
-        className={styles.scrollIndicator}
+        transition={{ duration: 1, delay: 1.4 }}
       >
-        <span>Discover</span>
-        <div className={styles.scrollLine} />
+        <span>Explore</span>
+        <motion.div
+          className={styles.scrollLine}
+          animate={{ scaleY: [1, 0.5, 1] }}
+          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+        />
       </motion.div>
     </section>
   );

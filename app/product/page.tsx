@@ -1,20 +1,20 @@
 import React from 'react';
 import { ProductClient } from './ProductClient';
-import { fetchProduct } from '@/lib/shopify';
+import { WhyUs } from '@/components/sections/WhyUs';
+import { Footer } from '@/components/sections/Footer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Acquire Itminan | The Smart Tasbih',
-  description: 'Purchase the premium rhinestone Itminan smart tasbih counter.',
+  title: 'ITMINAAN | Handcrafted Handbag — Order Now',
+  description: 'Order your beautiful handcrafted Pakistani handbag. Traditional block printing, mirror work & tassel detailing. Rs. 1,299. COD available across Pakistan.',
 };
 
-export default async function ProductPage() {
-  const handle = process.env.NEXT_PUBLIC_SHOPIFY_PRODUCT_HANDLE || 'itminan-smart-tasbih';
-  const product = await fetchProduct(handle);
-
+export default function ProductPage() {
   return (
     <main>
-      <ProductClient product={product} />
+      <ProductClient />
+      <WhyUs />
+      <Footer />
     </main>
   );
 }

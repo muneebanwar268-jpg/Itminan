@@ -1,0 +1,50 @@
+.bar {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.text {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: #F0EAE0;
+  white-space: nowrap;
+  display: block;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: absolute;
+  right: 20px;
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.25);
+  transition: background-color 0.4s ease, transform 0.4s ease;
+}
+
+.dotActive {
+  background-color: rgba(255, 255, 255, 0.75);
+  transform: scale(1.3);
+}
+
+@media (max-width: 480px) {
+  .text {
+    font-size: 11px;
+  }
+  .dots {
+    display: none;
+  }
+}

@@ -2,30 +2,25 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export interface CartItem {
-  id: string; // unique ID based on selections (e.g., 'ring-silver-8')
+  id: string;
   name: string;
   price: number;
   quantity: number;
-  size: string;
-  finish: string;
   image: string;
-  variantId?: string; // Shopify Variant GID
 }
 
 interface CartState {
   items: CartItem[];
   isOpen: boolean;
-  
-  // Actions
-  addItem: (item: Omit<CartItem, 'id'>) => void;
+
+  addItem: (item: Omit<CartItem, 'id'> & { id?: string }) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   toggleCart: () => void;
   openCart: () => void;
   closeCart: () => void;
   clearCart: () => void;
-  
-  // Computed
+
   getTotalPrice: () => number;
   getTotalItems: () => number;
 }
@@ -37,25 +32,25 @@ export const useCartStore = create<CartState>()(
       isOpen: false,
 
       addItem: (newItem) => {
-        const id = `${newItem.name.toLowerCase().replace(/\s+/g, '-')}-${newItem.finish.toLowerCase()}-${newItem.size}`;
-        
+        const id = newItem.id ?? newItem.name.toLowerCase().replace(/\s+/g, '-');
+
         set((state) => {
           const existingItem = state.items.find((item) => item.id === id);
-          
+
           if (existingItem) {
             return {
               items: state.items.map((item) =>
                 item.id === id
-                  ? { ...item, quantity: item.quantity + newItem.quantity }
+                  ? { ...item, quantity: item.quantity + (newItem.quantity ?? 1) }
                   : item
               ),
-              isOpen: true, // Auto open cart when adding
+              isOpen: true,
             };
           }
-          
+
           return {
             items: [...state.items, { ...newItem, id }],
-            isOpen: true, // Auto open cart when adding
+            isOpen: true,
           };
         });
       },
@@ -67,9 +62,12 @@ export const useCartStore = create<CartState>()(
 
       updateQuantity: (id, quantity) =>
         set((state) => ({
-          items: quantity <= 0 
-            ? state.items.filter((item) => item.id !== id)
-            : state.items.map((item) => (item.id === id ? { ...item, quantity } : item)),
+          items:
+            quantity <= 0
+              ? state.items.filter((item) => item.id !== id)
+              : state.items.map((item) =>
+                  item.id === id ? { ...item, quantity } : item
+                ),
         })),
 
       toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
@@ -78,7 +76,10 @@ export const useCartStore = create<CartState>()(
       clearCart: () => set({ items: [] }),
 
       getTotalPrice: () => {
-        return get().items.reduce((total, item) => total + item.price * item.quantity, 0);
+        return get().items.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0
+        );
       },
 
       getTotalItems: () => {
@@ -86,8 +87,7 @@ export const useCartStore = create<CartState>()(
       },
     }),
     {
-      name: 'itminan-cart-storage',
-      // We don't want to persist the 'isOpen' state, only the items
+      name: 'itminaan-cart',
       partialize: (state) => ({ items: state.items }),
     }
   )

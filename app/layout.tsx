@@ -5,10 +5,10 @@ import styles from "./layout.module.css";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { CartDrawer } from "@/components/ecommerce/CartDrawer";
 import { Navbar } from "@/components/navigation/Navbar";
-import { Footer } from "@/components/sections/Footer";
+import { AnnouncementBar } from "@/components/sections/AnnouncementBar";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
@@ -18,8 +18,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Itminan | Premium Smart Tasbih Ring",
-  description: "Experience spiritual clarity with Itminan, a premium luxury smart tasbih counter designed for modern mindfulness.",
+  title: "ITMINAAN | Handcrafted Pakistani Handbags",
+  description:
+    "Discover ITMINAAN — beautifully handcrafted Pakistani handbags featuring traditional block printing, mirror work and tassel detailing. COD available across Pakistan.",
+  openGraph: {
+    title: "ITMINAAN | Handcrafted Pakistani Handbags",
+    description:
+      "Traditional block printing, mirror work & tassel detailing. Delivered across Pakistan. Rs. 1,299.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -31,13 +38,13 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${styles.root}`}
+      className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <body suppressHydrationWarning className={styles.body}>
         <SmoothScrollProvider>
+          <AnnouncementBar />
           <Navbar />
           {children}
-          <Footer />
           <CartDrawer />
         </SmoothScrollProvider>
       </body>

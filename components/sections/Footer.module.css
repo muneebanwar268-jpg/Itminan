@@ -1,94 +1,144 @@
+/* Footer — ITMINAAN */
 .footer {
-  width: 100%;
-  background-color: var(--bg-secondary); /* Very Light Neutral */
-  padding: 8rem 1.5rem 4rem 1.5rem;
+  background-color: var(--ink);
+  color: var(--white);
 }
 
 .inner {
-  max-width: 80rem;
+  max-width: 1280px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4rem;
+  padding: 64px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .inner {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
+    grid-template-columns: 1fr;
+    padding: 48px 24px;
+    gap: 40px;
   }
 }
 
+/* ── Brand ── */
 .brand {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.tagline {
+  font-size: 14px;
+  color: var(--sand);
+  line-height: 1.6;
+  max-width: 28ch;
+}
+
+.socials {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.socialLink {
+  color: var(--sand);
+  opacity: 0.7;
+  transition: opacity 0.2s, color 0.2s;
+  display: flex;
   align-items: center;
-  text-align: center;
 }
 
-@media (min-width: 768px) {
-  .brand {
-    align-items: flex-start;
-    text-align: left;
-  }
+.socialLink:hover {
+  opacity: 1;
+  color: var(--white);
 }
 
-.brandName {
-  font-size: 3rem;
-  font-weight: 300;
-  letter-spacing: 0.25em;
-  color: var(--text-main);
+/* ── Contact ── */
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contactTitle {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sand);
+}
+
+.contactLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contactLink {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  transition: color 0.2s;
   line-height: 1;
 }
 
-.copy {
-  font-size: 0.875rem;
-  color: var(--text-muted);
+.contactLink:hover {
+  color: var(--white);
 }
 
-.links {
+/* ── Bottom Bar ── */
+.bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bottomInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px 48px;
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
   align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
-@media (min-width: 768px) {
-  .links {
-    flex-direction: row;
-    gap: 3rem;
+@media (max-width: 768px) {
+  .bottomInner {
+    padding: 20px 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 }
 
-.link {
-  font-size: 0.875rem;
-  color: var(--text-main);
+.copy {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.legal {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.legalLink {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
   text-decoration: none;
-  transition: color 0.3s ease;
-  position: relative;
+  transition: color 0.2s;
 }
 
-.link::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  transform: scaleX(0);
-  height: 1px;
-  bottom: -4px;
-  left: 0;
-  background-color: var(--text-main);
-  transform-origin: bottom right;
-  transition: transform 0.3s ease-out;
-}
-
-.link:hover {
-  color: var(--text-main);
-}
-
-.link:hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
+.legalLink:hover {
+  color: var(--white);
 }
