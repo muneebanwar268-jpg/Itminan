@@ -15,7 +15,7 @@ const images = [
 
 export function ProductIntro() {
   const [selected, setSelected] = useState(0);
-  const { addItem, toggleCart } = useCartStore();
+  const { addItem, openCart } = useCartStore();
 
   const handleAddToCart = () => {
     addItem({
@@ -25,7 +25,7 @@ export function ProductIntro() {
       quantity: 1,
       image: "/images/bag-front.jpg",
     });
-    toggleCart();
+    openCart();
   };
 
   return (
@@ -122,15 +122,15 @@ export function ProductIntro() {
             >
               ADD TO CART
             </motion.button>
-            <motion.a
-              href="#product"
+            <motion.button
+              type="button"
               onClick={handleAddToCart}
               className={styles.btnBuy}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
             >
               BUY NOW
-            </motion.a>
+            </motion.button>
           </div>
 
           <div className={styles.trust}>

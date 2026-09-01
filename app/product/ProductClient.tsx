@@ -45,7 +45,7 @@ export function ProductClient() {
   const [selectedImage, setSelectedImage] = useState(0);
   const [qty, setQty] = useState(1);
   const [openIndex, setOpenIndex] = useState<number | null>(0); // First open by default
-  const { addItem, toggleCart } = useCartStore();
+  const { addItem, openCart } = useCartStore();
 
   const handleAddToCart = () => {
     addItem({
@@ -55,7 +55,7 @@ export function ProductClient() {
       quantity: qty,
       image: productImages[0].src,
     });
-    toggleCart();
+    openCart();
   };
 
   return (
