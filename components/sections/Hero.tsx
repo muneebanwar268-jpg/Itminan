@@ -22,7 +22,7 @@ export function Hero() {
         >
           <div className={styles.imageWrap}>
             <Image
-              src="/images/bag-front.jpg"
+              src="/images/bag-front-nobg.png"
               alt="ITMINAAN Handcrafted Handbag — Front View"
               width={520}
               height={520}
@@ -68,7 +68,7 @@ export function Hero() {
         >
           <div className={styles.imageWrap}>
             <Image
-              src="/images/bag-collection.jpg"
+              src="/images/bag-top-nobg.png"
               alt="ITMINAAN Handcrafted Handbag — Collection"
               width={520}
               height={520}
