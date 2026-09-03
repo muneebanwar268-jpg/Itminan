@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { Truck, ShieldCheck, Palette, Sparkles, Gem, Ruler } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { useRouter } from "next/navigation";
 import type { StoreProduct } from "@/lib/shopify-admin";
@@ -23,6 +24,7 @@ export function ProductIntro({ initialProduct }: ProductIntroProps) {
   const router = useRouter();
   const [product, setProduct] = useState<StoreProduct | undefined>(initialProduct);
   const [selected, setSelected] = useState(0);
+  const [qty, setQty] = useState(1);
   const { addItem, openCart } = useCartStore();
 
   React.useEffect(() => {
@@ -39,6 +41,7 @@ export function ProductIntro({ initialProduct }: ProductIntroProps) {
   const title = product?.title || "Handcrafted Handbag";
   const description = product?.description || "A beautifully handcrafted handbag featuring traditional block printing, intricate mirror work and tassel detailing. Designed to be easy to carry and add a distinctive touch to your look.";
   const price = product?.price || 1299;
+  const compareAtPrice = product?.compareAtPrice || (price > 1000 ? Math.round(price * 1.45) : 1899);
 
   const images = (product?.images && product.images.length > 0)
     ? product.images.map((img) => ({ src: img.url, alt: img.altText || title }))
@@ -52,7 +55,7 @@ export function ProductIntro({ initialProduct }: ProductIntroProps) {
       id: primaryVariant?.id || product?.id || "itminaan-handbag",
       name: title,
       price: price,
-      quantity: 1,
+      quantity: qty,
       image: currentImage.src,
     });
     openCart();
@@ -63,7 +66,7 @@ export function ProductIntro({ initialProduct }: ProductIntroProps) {
       id: primaryVariant?.id || product?.id || "itminaan-handbag",
       name: title,
       price: price,
-      quantity: 1,
+      quantity: qty,
       image: currentImage.src,
     });
     router.push("/checkout");
@@ -78,7 +81,7 @@ export function ProductIntro({ initialProduct }: ProductIntroProps) {
           <motion.div
             key={selected}
             className={styles.mainImageWrap}
-            initial={{ opacity: 0.7, scale: 0.99 }}
+            initial={{ opacity: 0.8, scale: 0.99 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
           >
@@ -119,65 +122,122 @@ export function ProductIntro({ initialProduct }: ProductIntroProps) {
         {/* Right — Product Details */}
         <motion.div
           className={styles.details}
-          initial={{ opacity: 0, x: 30 }}
+          initial={{ opacity: 0, x: 24 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
-          <span className={styles.tag}>ITMINAAN Collection</span>
+          <div className={styles.topMeta}>
+            <span className={styles.tag}>ITMINAAN Collection</span>
+            <span className={styles.ratingBadge}>★ 4.9 (120+ Reviews)</span>
+          </div>
+
           <h2 className={styles.productName}>{title}</h2>
+
           <p className={styles.description}>
             {description}
           </p>
 
           <div className={styles.priceRow}>
-            <span className={styles.price}>Rs. {price.toLocaleString()}</span>
-            <span className={styles.priceSub}>COD Available</span>
-          </div>
-
-          <div className={styles.features}>
-            <div className={styles.featureItem}>
-              <span className={styles.featureDot} />
-              Traditional block printing
+            <div className={styles.priceGroup}>
+              <span className={styles.price}>Rs. {price.toLocaleString()}</span>
+              {compareAtPrice > price && (
+                <span className={styles.originalPrice}>Rs. {compareAtPrice.toLocaleString()}</span>
+              )}
+              <span className={styles.discountBadge}>SAVE 31%</span>
             </div>
-            <div className={styles.featureItem}>
-              <span className={styles.featureDot} />
-              Mirror &amp; shisha embroidery
-            </div>
-            <div className={styles.featureItem}>
-              <span className={styles.featureDot} />
-              Gold tassel detailing
-            </div>
-            <div className={styles.featureItem}>
-              <span className={styles.featureDot} />
-              ~10&quot; × 10&quot; size
+            <div className={styles.stockBadge}>
+              <span className={styles.stockDot} />
+              In Stock — COD Available
             </div>
           </div>
 
-          <div className={styles.actions}>
-            <motion.button
-              onClick={handleAddToCart}
-              className={styles.btnCart}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              ADD TO CART
-            </motion.button>
-            <motion.button
-              type="button"
-              onClick={handleBuyNow}
-              className={styles.btnBuy}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              BUY NOW
-            </motion.button>
+          {/* Craftsmanship & Specification Highlights */}
+          <div className={styles.featuresGrid}>
+            <div className={styles.featureCard}>
+              <Palette size={16} className={styles.featureIcon} />
+              <div className={styles.featureText}>
+                <strong>Traditional Block Printing</strong>
+                <span>Hand-pressed regional floral motifs</span>
+              </div>
+            </div>
+            <div className={styles.featureCard}>
+              <Sparkles size={16} className={styles.featureIcon} />
+              <div className={styles.featureText}>
+                <strong>Mirror &amp; Shisha Work</strong>
+                <span>Real hand-embroidered mirror embellishments</span>
+              </div>
+            </div>
+            <div className={styles.featureCard}>
+              <Gem size={16} className={styles.featureIcon} />
+              <div className={styles.featureText}>
+                <strong>Gold Tassel Detailing</strong>
+                <span>Opulent hand-tied zari latkan drawstrings</span>
+              </div>
+            </div>
+            <div className={styles.featureCard}>
+              <Ruler size={16} className={styles.featureIcon} />
+              <div className={styles.featureText}>
+                <strong>Festive Size (~10&quot; × 10&quot;)</strong>
+                <span>Spacious interior for phone, makeup &amp; essentials</span>
+              </div>
+            </div>
           </div>
 
-          <div className={styles.trust}>
-            <span>🚚 Cash on Delivery</span>
-            <span>📦 3–5 Day Delivery</span>
-            <span>✨ Quality Assured</span>
+          {/* Quantity & CTA Buttons */}
+          <div className={styles.purchaseRow}>
+            <div className={styles.qtyPicker}>
+              <button
+                type="button"
+                onClick={() => setQty(Math.max(1, qty - 1))}
+                className={styles.qtyBtn}
+                aria-label="Decrease quantity"
+              >
+                −
+              </button>
+              <span className={styles.qtyValue}>{qty}</span>
+              <button
+                type="button"
+                onClick={() => setQty(qty + 1)}
+                className={styles.qtyBtn}
+                aria-label="Increase quantity"
+              >
+                +
+              </button>
+            </div>
+
+            <div className={styles.actions}>
+              <motion.button
+                onClick={handleAddToCart}
+                className={styles.btnCart}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                ADD TO CART
+              </motion.button>
+              <motion.button
+                type="button"
+                onClick={handleBuyNow}
+                className={styles.btnBuy}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                BUY NOW (COD)
+              </motion.button>
+            </div>
+          </div>
+
+          {/* Reassurance Banner */}
+          <div className={styles.assuranceBanner}>
+            <div className={styles.assuranceItem}>
+              <Truck size={16} className={styles.assuranceIcon} />
+              <span>Free Cash on Delivery (3–5 Days)</span>
+            </div>
+            <div className={styles.assuranceDivider} />
+            <div className={styles.assuranceItem}>
+              <ShieldCheck size={16} className={styles.assuranceIcon} />
+              <span>100% Quality Inspected Guarantee</span>
+            </div>
           </div>
         </motion.div>
 

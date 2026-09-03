@@ -41,7 +41,7 @@ export function Footer() {
             Made to add a little more beauty to every moment.
           </p>
           <div className={styles.socials}>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Instagram">
+            <a href="https://www.instagram.com/itminaanonline" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Instagram">
               <InstagramIcon />
             </a>
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Facebook">
@@ -63,7 +63,7 @@ export function Footer() {
             <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
               Phone / WhatsApp
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
+            <a href="https://www.instagram.com/itminaanonline" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
               Instagram
             </a>
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>

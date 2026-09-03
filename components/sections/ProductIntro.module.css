@@ -1,21 +1,21 @@
 /* ProductIntro — ITMINAAN Handbag */
 .section {
   background-color: var(--cream);
-  padding: 80px 0 96px;
+  padding: 72px 0 88px;
   border-top: 1px solid var(--border-cream);
 }
 
 .inner {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  align-items: start;
+  grid-template-columns: minmax(360px, 480px) 1fr;
+  gap: 52px;
+  align-items: center;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .inner {
     grid-template-columns: 1fr;
     gap: 40px;
@@ -26,7 +26,10 @@
 .gallery {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
 .mainImageWrap {
@@ -35,7 +38,7 @@
   border-radius: 12px;
   overflow: hidden;
   background-color: #F0EBE1;
-  box-shadow: 0 4px 24px rgba(32, 32, 29, 0.1);
+  box-shadow: 0 6px 24px rgba(32, 32, 29, 0.08);
 }
 
 .mainImage {
@@ -46,8 +49,8 @@
 }
 
 .thumbnails {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -55,10 +58,13 @@
   border-radius: 8px;
   overflow: hidden;
   border: 2px solid transparent;
-  background: none;
+  background: #EFE9DE;
   padding: 0;
   cursor: pointer;
   aspect-ratio: 1 / 1;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
   transition: border-color 0.2s, transform 0.2s;
 }
 
@@ -81,20 +87,38 @@
 .details {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding-top: 8px;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.topMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .tag {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.22em;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--gold);
 }
 
+.ratingBadge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.03em;
+  background-color: rgba(200, 148, 58, 0.08);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
 .productName {
-  font-size: clamp(28px, 3.5vw, 40px);
+  font-size: clamp(28px, 3.2vw, 38px);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--ink);
@@ -102,67 +126,173 @@
 }
 
 .description {
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: 14.5px;
+  line-height: 1.65;
   color: var(--text-muted);
-  max-width: 46ch;
+  max-width: 54ch;
 }
 
+/* ── Price Row ── */
 .priceRow {
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
-  padding: 16px 0;
+  padding: 12px 0;
   border-top: 1px solid var(--border-cream);
   border-bottom: 1px solid var(--border-cream);
 }
 
+.priceGroup {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
 .price {
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 800;
   color: var(--ink);
   letter-spacing: -0.02em;
 }
 
-.priceSub {
-  font-size: 12px;
-  color: var(--text-muted);
-  background-color: rgba(200, 148, 58, 0.1);
-  color: var(--gold);
-  padding: 3px 10px;
-  border-radius: 9999px;
-  font-weight: 600;
+.originalPrice {
+  font-size: 15px;
+  color: #9C9A95;
+  text-decoration: line-through;
+  font-weight: 500;
+}
+
+.discountBadge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #B42318;
+  background-color: #FEF3F2;
+  border: 1px solid rgba(180, 35, 24, 0.15);
+  padding: 2px 7px;
+  border-radius: 4px;
   letter-spacing: 0.04em;
 }
 
-.features {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.featureItem {
-  display: flex;
+.stockBadge {
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  color: var(--text-dark);
+  gap: 6px;
+  font-size: 11.5px;
+  color: #15763D;
+  font-weight: 600;
+  background-color: #EDFDF2;
+  border: 1px solid rgba(21, 118, 61, 0.15);
+  padding: 4px 10px;
+  border-radius: 9999px;
 }
 
-.featureDot {
+.stockDot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--magenta);
+  background-color: #12B76A;
   flex-shrink: 0;
 }
 
-/* ── Buttons ── */
-.actions {
+/* ── Features Grid ── */
+.featuresGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 4px;
+  gap: 10px;
+}
+
+.featureCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 9px 12px;
+  background-color: rgba(255, 255, 255, 0.65);
+  border: 1px solid var(--border-cream);
+  border-radius: 8px;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.featureCard:hover {
+  background-color: #FFFFFF;
+  border-color: rgba(200, 148, 58, 0.35);
+}
+
+.featureIcon {
+  color: var(--gold);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.featureText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.featureText strong {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.featureText span {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+/* ── Purchase Row (Quantity + CTA Buttons) ── */
+.purchaseRow {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.qtyPicker {
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--border-cream);
+  border-radius: 4px;
+  padding: 0 4px;
+}
+
+.qtyBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  width: 28px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+}
+
+.qtyBtn:hover {
+  color: var(--gold);
+}
+
+.qtyValue {
+  min-width: 22px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.actions {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
 .btnCart {
@@ -170,11 +300,11 @@
   color: var(--white);
   border: none;
   cursor: pointer;
-  padding: 15px 20px;
+  padding: 13px 16px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   transition: background-color 0.25s;
 }
@@ -191,11 +321,11 @@
   color: var(--ink);
   border: 2px solid var(--ink);
   cursor: pointer;
-  padding: 15px 20px;
+  padding: 13px 16px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
   transition: background-color 0.25s, color 0.25s;
@@ -206,28 +336,58 @@
   color: var(--white);
 }
 
-/* ── Trust Badges ── */
-.trust {
+/* ── Assurance Banner ── */
+.assuranceBanner {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 4px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 14px;
+  background-color: rgba(200, 148, 58, 0.06);
+  border: 1px solid rgba(200, 148, 58, 0.16);
+  border-radius: 8px;
 }
 
-.trust span {
-  font-size: 12px;
-  color: var(--text-muted);
-  font-weight: 500;
+.assuranceItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.assuranceIcon {
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.assuranceDivider {
+  width: 1px;
+  height: 16px;
+  background-color: rgba(200, 148, 58, 0.25);
 }
 
 @media (max-width: 640px) {
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+  .purchaseRow {
+    flex-direction: column;
+  }
+  .qtyPicker {
+    height: 42px;
+    justify-content: center;
+  }
   .actions {
     grid-template-columns: 1fr;
   }
-  .thumbnails {
-    grid-template-columns: repeat(4, 1fr);
+  .assuranceBanner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
-  .trust {
-    gap: 10px;
+  .assuranceDivider {
+    display: none;
   }
 }
