@@ -6,6 +6,7 @@ import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvide
 import { CartDrawer } from "@/components/ecommerce/CartDrawer";
 import { Navbar } from "@/components/navigation/Navbar";
 import { AnnouncementBar } from "@/components/sections/AnnouncementBar";
+import { MetaPixel } from "@/components/analytics/MetaPixel";
 
 const geistSans = Geist({
   variable: "--font-sans",
@@ -41,6 +42,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <body suppressHydrationWarning className={styles.body}>
+        <MetaPixel />
         <SmoothScrollProvider>
           <AnnouncementBar />
           <Navbar />

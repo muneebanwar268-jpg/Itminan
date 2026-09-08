@@ -7,6 +7,7 @@ import { useCartStore } from "@/store/cartStore";
 import styles from "./CartDrawer.module.css";
 
 import { useRouter } from "next/navigation";
+import { trackMetaEvent } from "@/lib/pixel";
 
 export function CartDrawer() {
   const router = useRouter();
@@ -14,6 +15,20 @@ export function CartDrawer() {
   const [mounted, setMounted] = useState(false);
 
   const handleCheckout = () => {
+    trackMetaEvent("InitiateCheckout", {
+      content_type: "product",
+      content_ids: items.map((i) => i.id),
+      contents: items.map((i) => ({
+        id: i.id,
+        quantity: i.quantity,
+        item_price: i.price,
+        title: i.name,
+      })),
+      value: getTotalPrice(),
+      currency: "PKR",
+      num_items: items.reduce((acc, item) => acc + item.quantity, 0),
+    });
+
     closeCart();
     router.push("/checkout");
   };

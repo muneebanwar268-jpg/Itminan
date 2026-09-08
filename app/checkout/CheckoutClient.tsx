@@ -14,6 +14,7 @@ import {
   ArrowRight
 } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
+import { trackMetaEvent, generateEventId, getCookie } from "@/lib/pixel";
 import styles from "./Checkout.module.css";
 
 function formatPakistaniPhone(input: string): string {
@@ -63,6 +64,22 @@ export function CheckoutClient() {
 
   useEffect(() => {
     setMounted(true);
+
+    if (items.length > 0) {
+      trackMetaEvent("InitiateCheckout", {
+        content_type: "product",
+        content_ids: items.map((i) => i.id),
+        contents: items.map((i) => ({
+          id: i.id,
+          quantity: i.quantity,
+          item_price: i.price,
+          title: i.name,
+        })),
+        value: getTotalPrice(),
+        currency: "PKR",
+        num_items: items.reduce((acc, item) => acc + item.quantity, 0),
+      });
+    }
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -105,6 +122,12 @@ export function CheckoutClient() {
 
     setSubmitting(true);
 
+    // Generate shared event ID for 100% CAPI & Pixel deduplication
+    const purchaseEventId = generateEventId("purchase");
+    const fbp = getCookie("_fbp");
+    const fbc = getCookie("_fbc");
+    const currentUrl = typeof window !== "undefined" ? window.location.href : "https://itminaan.pk/checkout";
+
     try {
       const response = await fetch("/api/order/create", {
         method: "POST",
@@ -136,6 +159,10 @@ export function CheckoutClient() {
           })),
           note: form.note,
           paymentMethod: "Cash On Delivery (COD)",
+          eventId: purchaseEventId,
+          fbp,
+          fbc,
+          eventSourceUrl: currentUrl,
         }),
       });
 
@@ -144,6 +171,36 @@ export function CheckoutClient() {
       if (!response.ok || !data.success) {
         throw new Error(data.error || "Failed to place order on Shopify");
       }
+
+      // Track browser Purchase event with identical event ID for perfect deduplication
+      trackMetaEvent(
+        "Purchase",
+        {
+          content_type: "product",
+          content_ids: items.map((i) => i.id),
+          contents: items.map((i) => ({
+            id: i.id,
+            quantity: i.quantity,
+            item_price: i.price,
+            title: i.name,
+          })),
+          value: data.order?.totalPrice ? Number(data.order.totalPrice) : getTotalPrice(),
+          currency: "PKR",
+          num_items: items.reduce((acc, item) => acc + item.quantity, 0),
+          order_id: data.order?.orderNumber || data.order?.orderId,
+        },
+        {
+          email: form.email,
+          phone: form.phone,
+          firstName: form.firstName,
+          lastName: form.lastName || form.firstName,
+          city: form.city,
+          province: form.province,
+          zip: form.postalCode,
+          country: "PK",
+        },
+        purchaseEventId
+      );
 
       // Order placed successfully
       setOrderResult(data.order);

@@ -7,6 +7,7 @@ import { Truck, ShieldCheck, Palette, Sparkles, Gem, Ruler } from "lucide-react"
 import { useCartStore } from "@/store/cartStore";
 import { useRouter } from "next/navigation";
 import type { StoreProduct } from "@/lib/shopify-admin";
+import { trackMetaEvent } from "@/lib/pixel";
 import styles from "./ProductIntro.module.css";
 
 const fallbackImages = [
@@ -49,26 +50,93 @@ export function ProductIntro({ initialProduct }: ProductIntroProps) {
 
   const currentImage = images[selected] || images[0];
   const primaryVariant = product?.variants?.[0];
+  const productId = primaryVariant?.id || product?.id || "itminaan-handbag";
+
+  // Track ViewContent when product data is ready
+  React.useEffect(() => {
+    if (product) {
+      trackMetaEvent("ViewContent", {
+        content_name: title,
+        content_type: "product",
+        content_ids: [productId],
+        value: price,
+        currency: "PKR",
+        contents: [{
+          id: productId,
+          quantity: 1,
+          item_price: price,
+          title: title,
+        }],
+      });
+    }
+  }, [product, title, price, productId]);
 
   const handleAddToCart = () => {
     addItem({
-      id: primaryVariant?.id || product?.id || "itminaan-handbag",
+      id: productId,
       name: title,
       price: price,
       quantity: qty,
       image: currentImage.src,
     });
+
+    trackMetaEvent("AddToCart", {
+      content_name: title,
+      content_type: "product",
+      content_ids: [productId],
+      value: price * qty,
+      currency: "PKR",
+      contents: [{
+        id: productId,
+        quantity: qty,
+        item_price: price,
+        title: title,
+      }],
+      num_items: qty,
+    });
+
     openCart();
   };
 
   const handleBuyNow = () => {
     addItem({
-      id: primaryVariant?.id || product?.id || "itminaan-handbag",
+      id: productId,
       name: title,
       price: price,
       quantity: qty,
       image: currentImage.src,
     });
+
+    trackMetaEvent("AddToCart", {
+      content_name: title,
+      content_type: "product",
+      content_ids: [productId],
+      value: price * qty,
+      currency: "PKR",
+      contents: [{
+        id: productId,
+        quantity: qty,
+        item_price: price,
+        title: title,
+      }],
+      num_items: qty,
+    });
+
+    trackMetaEvent("InitiateCheckout", {
+      content_name: title,
+      content_type: "product",
+      content_ids: [productId],
+      value: price * qty,
+      currency: "PKR",
+      contents: [{
+        id: productId,
+        quantity: qty,
+        item_price: price,
+        title: title,
+      }],
+      num_items: qty,
+    });
+
     router.push("/checkout");
   };
 
