@@ -22,7 +22,7 @@ export function Hero() {
         >
           <div className={styles.imageWrap}>
             <Image
-              src="/images/bag-front-nobg.png"
+              src="/images/left.webp"
               alt="ITMINAAN Handcrafted Handbag — Front View"
               width={520}
               height={520}
@@ -44,9 +44,9 @@ export function Hero() {
             Carry<br />
             <em>Culture.</em>
           </h1>
-          {/* <p className={styles.sub}>
-            Traditional block printing, mirror work &amp; tassel detailing — beautifully crafted for every occasion.
-          </p> */}
+          <p className={styles.sub}>
+            A Handbag Woven with Heritage -- Mirror work , Golden taseels and a Golden Chain Attached for hanging,crafted just like you
+          </p>
           <Link href="/product" className={styles.cta}>
             <motion.span
               style={{ display: "inline-flex", alignItems: "center" }}
@@ -68,7 +68,7 @@ export function Hero() {
         >
           <div className={styles.imageWrap}>
             <Image
-              src="/images/bag-top-nobg.png"
+              src="/images/right.webp"
               alt="ITMINAAN Handcrafted Handbag — Collection"
               width={520}
               height={520}

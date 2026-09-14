@@ -29,6 +29,10 @@ function WhatsAppIcon() {
   );
 }
 
+const WHATSAPP_URL =
+  "https://wa.me/923374292166?text=" +
+  encodeURIComponent("Hello ITMINAAN! I'm interested in your handcrafted handbags and would like to know more.");
+
 export function Footer() {
   return (
     <footer className={styles.footer}>
@@ -44,10 +48,10 @@ export function Footer() {
             <a href="https://www.instagram.com/itminaanonline" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Instagram">
               <InstagramIcon />
             </a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Facebook">
+            <a href="https://www.facebook.com/people/Itminaanonline/61593809892499/" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="Facebook">
               <FacebookIcon />
             </a>
-            <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="WhatsApp">
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className={styles.socialLink} aria-label="WhatsApp">
               <WhatsAppIcon />
             </a>
           </div>
@@ -60,13 +64,13 @@ export function Footer() {
             <a href="mailto:itminaanonline@gmail.com" className={styles.contactLink}>
               itminaanonline@gmail.com
             </a>
-            <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
-              Phone / WhatsApp
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
+              WhatsApp
             </a>
             <a href="https://www.instagram.com/itminaanonline" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
               Instagram
             </a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
+            <a href="https://www.facebook.com/people/Itminaanonline/61593809892499" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
               Facebook
             </a>
           </div>
