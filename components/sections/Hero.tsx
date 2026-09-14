@@ -45,7 +45,7 @@ export function Hero() {
             <em>Culture.</em>
           </h1>
           <p className={styles.sub}>
-            A Handbag Woven with Heritage -- Mirror work , Golden taseels and a Golden Chain Attached for hanging,crafted just like you
+            A Handbag Woven with Heritage -- Mirror work , Golden taseels and a Golden Chain Attached for hanging,crafted just like you ❤️❤️
           </p>
           <Link href="/product" className={styles.cta}>
             <motion.span
