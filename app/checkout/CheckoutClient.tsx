@@ -60,7 +60,7 @@ export function CheckoutClient() {
     phone: "+92 ",
     address: "",
     apartment: "",
-    city: "Karachi",
+    city: "",
     province: "Sindh",
     postalCode: "",
     note: "",
@@ -297,9 +297,9 @@ export function CheckoutClient() {
             <ArrowLeft size={16} /> Return to Store
           </Link>
           <div className={styles.brandLogo}>ITMINAAN</div>
-          <div className={styles.secureBadge}>
+          {/* <div className={styles.secureBadge}>
             <Lock size={12} /> Secure Checkout
-          </div>
+          </div> */}
         </div>
 
         {errorMessage && (
@@ -399,25 +399,15 @@ export function CheckoutClient() {
               <div className={styles.formRow}>
                 <div className={styles.field}>
                   <label className={styles.label}>City *</label>
-                  <select
+                  <input
+                    type="text"
                     name="city"
+                    required
+                    placeholder="Enter your city (e.g. Lahore, Karachi, Multan)"
                     value={form.city}
                     onChange={handleChange}
-                    className={styles.select}
-                  >
-                    <option value="Karachi">Karachi</option>
-                    <option value="Lahore">Lahore</option>
-                    <option value="Islamabad">Islamabad</option>
-                    <option value="Rawalpindi">Rawalpindi</option>
-                    <option value="Faisalabad">Faisalabad</option>
-                    <option value="Multan">Multan</option>
-                    <option value="Peshawar">Peshawar</option>
-                    <option value="Quetta">Quetta</option>
-                    <option value="Sialkot">Sialkot</option>
-                    <option value="Hyderabad">Hyderabad</option>
-                    <option value="Gujranwala">Gujranwala</option>
-                    <option value="Other">Other City</option>
-                  </select>
+                    className={styles.input}
+                  />
                 </div>
                 <div className={styles.field}>
                   <label className={styles.label}>Province</label>
@@ -459,7 +449,7 @@ export function CheckoutClient() {
                   <div className={styles.paymentSubtitle}>Pay in cash when your parcel is delivered to your doorstep.</div>
                 </div>
               </div>
-              <span className={styles.tagPill}>Verified</span>
+              {/* <span className={styles.tagPill}>Verified</span> */}
             </div>
 
           </div>
@@ -503,7 +493,7 @@ export function CheckoutClient() {
                   </div>
                   <div className={styles.costRow}>
                     <span>Delivery Charges</span>
-                    <span className={styles.deliveryFee}>Rs. {DELIVERY_FEE.toLocaleString()} (Nationwide)</span>
+                    <span className={styles.deliveryFee}>Rs. {DELIVERY_FEE.toLocaleString()}</span>
                   </div>
                 </div>
 

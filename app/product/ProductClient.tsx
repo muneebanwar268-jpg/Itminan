@@ -53,7 +53,7 @@ export function ProductClient({ product }: ProductClientProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [qty, setQty] = useState(1);
   const [openIndex, setOpenIndex] = useState<number | null>(0); // First open by default
-  const { addItem, openCart } = useCartStore();
+  const { addItem, openCart, closeCart } = useCartStore();
 
   const fallbackVariants: NonNullable<StoreProduct['variants']> = [
     { id: "gid://shopify/ProductVariant/49071507669224", title: "1 Bag", price: 1299, compareAtPrice: 1884, availableForSale: true, image: "/images/bag-front.jpg" },
@@ -131,14 +131,18 @@ export function ProductClient({ product }: ProductClientProps) {
   };
 
   const handleBuyNow = () => {
-    addItem({
-      id: productId,
-      name: title,
-      variantTitle: variantTitle,
-      price: price,
-      quantity: qty,
-      image: activeVariant.image || currentImage.src,
-    });
+    closeCart();
+    addItem(
+      {
+        id: productId,
+        name: title,
+        variantTitle: variantTitle,
+        price: price,
+        quantity: qty,
+        image: activeVariant.image || currentImage.src,
+      },
+      false
+    );
 
     trackMetaEvent("AddToCart", {
       content_name: `${title} (${variantTitle})`,

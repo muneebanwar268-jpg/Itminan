@@ -14,7 +14,7 @@ interface CartState {
   items: CartItem[];
   isOpen: boolean;
 
-  addItem: (item: Omit<CartItem, 'id'> & { id?: string }) => void;
+  addItem: (item: Omit<CartItem, 'id'> & { id?: string }, openDrawer?: boolean) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   toggleCart: () => void;
@@ -32,7 +32,7 @@ export const useCartStore = create<CartState>()(
       items: [],
       isOpen: false,
 
-      addItem: (newItem) => {
+      addItem: (newItem, openDrawer = true) => {
         const id = newItem.id ?? newItem.name.toLowerCase().replace(/\s+/g, '-');
 
         set((state) => {
@@ -45,13 +45,13 @@ export const useCartStore = create<CartState>()(
                   ? { ...item, quantity: item.quantity + (newItem.quantity ?? 1) }
                   : item
               ),
-              isOpen: true,
+              isOpen: openDrawer ? true : false,
             };
           }
 
           return {
             items: [...state.items, { ...newItem, id }],
-            isOpen: true,
+            isOpen: openDrawer ? true : false,
           };
         });
       },

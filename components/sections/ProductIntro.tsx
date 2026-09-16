@@ -26,7 +26,7 @@ export function ProductIntro({ initialProduct }: ProductIntroProps) {
   const [product, setProduct] = useState<StoreProduct | undefined>(initialProduct);
   const [selected, setSelected] = useState(0);
   const [qty, setQty] = useState(1);
-  const { addItem, openCart } = useCartStore();
+  const { addItem, openCart, closeCart } = useCartStore();
 
   React.useEffect(() => {
     if (!initialProduct) {
@@ -117,14 +117,18 @@ export function ProductIntro({ initialProduct }: ProductIntroProps) {
   };
 
   const handleBuyNow = () => {
-    addItem({
-      id: productId,
-      name: title,
-      variantTitle: variantTitle,
-      price: price,
-      quantity: qty,
-      image: activeVariant.image || currentImage.src,
-    });
+    closeCart();
+    addItem(
+      {
+        id: productId,
+        name: title,
+        variantTitle: variantTitle,
+        price: price,
+        quantity: qty,
+        image: activeVariant.image || currentImage.src,
+      },
+      false
+    );
 
     trackMetaEvent("AddToCart", {
       content_name: `${title} (${variantTitle})`,

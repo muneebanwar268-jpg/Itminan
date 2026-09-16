@@ -321,7 +321,7 @@ export function Reviews() {
                     <span className={styles.authorAvatar}>
                       {review.name.charAt(0).toUpperCase()}
                     </span>
-                    <div>
+                    <div className={styles.authorMeta}>
                       <div className={styles.authorNameRow}>
                         <span className={styles.authorName}>{review.name}</span>
                         {review.verified && (

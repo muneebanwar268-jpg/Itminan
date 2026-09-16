@@ -156,11 +156,25 @@
 }
 
 .radioSelected {
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   border: 5px solid var(--gold, #C8943A);
   background: #FFFFFF;
+}
+
+@media screen and (max-width: 450px) {
+
+.radioSelected {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 3px solid var(--gold, #C8943A);
+  background: #FFFFFF;
+}
+ .paymentTitle{
+  font-size: 0.7rem;
+ }
 }
 
 .paymentTitle {
