@@ -241,7 +241,7 @@ export function ProductIntro({ initialProduct }: ProductIntroProps) {
             </div>
             <div className={styles.stockBadge}>
               <span className={styles.stockDot} />
-              In Stock — COD Available
+             COD Available
             </div>
           </div>
 
