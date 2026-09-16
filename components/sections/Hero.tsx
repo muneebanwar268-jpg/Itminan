@@ -98,7 +98,7 @@ export function Hero() {
             <div className={styles.trustBadges}>
               <div className={styles.trustItem}>
                 <span className={styles.trustIcon}>🚚</span>
-                <span>Free Delivery</span>
+                <span>Rs. 199 Delivery</span>
               </div>
               <span className={styles.trustDivider}>•</span>
               <div className={styles.trustItem}>

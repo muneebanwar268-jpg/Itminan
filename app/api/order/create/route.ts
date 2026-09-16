@@ -5,7 +5,7 @@ import { sendMetaCapiEvent } from '@/lib/meta-capi';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { customer, shippingAddress, items, note, paymentMethod, eventId, fbp, fbc, eventSourceUrl } = body;
+    const { customer, shippingAddress, items, note, paymentMethod, eventId, fbp, fbc, eventSourceUrl, shippingFee } = body;
 
     // 1. Validation
     if (!customer || !customer.firstName || !customer.phone) {
@@ -29,6 +29,8 @@ export async function POST(request: Request) {
       );
     }
 
+    const deliveryPrice = typeof shippingFee === 'number' ? shippingFee : 199;
+
     // 2. Prepare order input
     const orderInput: CreateOrderInput = {
       customer: {
@@ -47,11 +49,15 @@ export async function POST(request: Request) {
         phone: customer.phone.trim(),
       },
       lineItems: items.map((item: any) => ({
-        title: item.name || item.title || 'Itminaan Handcrafted Item',
+        title: item.variantTitle ? `${item.name || 'Handcrafted Handbag'} (${item.variantTitle})` : (item.name || item.title || 'Handcrafted Handbag'),
         quantity: item.quantity || 1,
         price: Number(item.price) || 1299,
         variantId: item.variantId || item.id,
       })),
+      shippingLine: {
+        title: 'Standard Delivery',
+        price: deliveryPrice,
+      },
       note: note || 'Order placed via In-App Custom Checkout (Cash on Delivery)',
       paymentMethod: paymentMethod || 'Cash On Delivery (COD)',
     };
@@ -72,7 +78,7 @@ export async function POST(request: Request) {
       const fbcCookie = fbc || cookieHeader.match(/(^|;\s*)_fbc=([^;]*)/)?.[2];
 
       const purchaseEventId = eventId || `order_${orderResult.orderId || orderResult.orderNumber}`;
-      const totalAmount = Number(orderResult.totalPrice) || orderInput.lineItems.reduce((acc, it) => acc + it.price * it.quantity, 0);
+      const totalAmount = Number(orderResult.totalPrice) || (orderInput.lineItems.reduce((acc, it) => acc + it.price * it.quantity, 0) + deliveryPrice);
 
       await sendMetaCapiEvent({
         eventName: 'Purchase',

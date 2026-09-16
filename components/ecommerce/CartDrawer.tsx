@@ -105,7 +105,7 @@ export function CartDrawer() {
                         <div>
                           <h3 className={styles.itemName}>{item.name}</h3>
                           <p className={styles.itemVariant}>
-                            Handcrafted Handbag
+                            {item.variantTitle || "Handcrafted Handbag"}
                           </p>
                         </div>
                         <span className={styles.itemPrice}>Rs. {item.price.toLocaleString()}</span>
@@ -159,6 +159,14 @@ export function CartDrawer() {
                 <div className={styles.subtotalRow}>
                   <span className={styles.subtotalLabel}>Subtotal</span>
                   <span className={styles.subtotalValue}>Rs. {getTotalPrice().toLocaleString()}</span>
+                </div>
+                <div className={styles.subtotalRow} style={{ marginTop: "6px", marginBottom: "10px", fontSize: "0.88rem", opacity: 0.85 }}>
+                  <span className={styles.subtotalLabel}>Delivery (Nationwide)</span>
+                  <span className={styles.subtotalValue}>Rs. 199</span>
+                </div>
+                <div className={styles.subtotalRow} style={{ paddingTop: "10px", borderTop: "1px solid rgba(0,0,0,0.06)", fontWeight: 700, fontSize: "1.05rem" }}>
+                  <span className={styles.subtotalLabel}>Total Due</span>
+                  <span className={styles.subtotalValue}>Rs. {(getTotalPrice() + 199).toLocaleString()}</span>
                 </div>
                 <button 
                   className={styles.checkoutBtn}

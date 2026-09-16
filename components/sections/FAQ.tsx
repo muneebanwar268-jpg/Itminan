@@ -10,6 +10,10 @@ const faqs = [
     a: "Yes, Cash on Delivery is available across Pakistan.",
   },
   {
+    q: "💰 What are the delivery charges?",
+    a: "We charge a standard delivery fee of Rs. 199 across Pakistan with safe and insured Cash on Delivery.",
+  },
+  {
     q: "📦 How long will my order take to arrive?",
     a: "Orders are delivered in 3–5 working days.",
   },

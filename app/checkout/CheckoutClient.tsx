@@ -41,8 +41,12 @@ function formatPakistaniPhone(input: string): string {
   return `+92${cleaned}`;
 }
 
+const DELIVERY_FEE = 199;
+
 export function CheckoutClient() {
   const { items, getTotalPrice, clearCart } = useCartStore();
+  const subtotal = getTotalPrice();
+  const totalAmount = items.length > 0 ? subtotal + DELIVERY_FEE : 0;
   const [mounted, setMounted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -153,10 +157,12 @@ export function CheckoutClient() {
           items: items.map((item) => ({
             id: item.id,
             name: item.name,
+            variantTitle: item.variantTitle,
             price: item.price,
             quantity: item.quantity,
             variantId: item.id,
           })),
+          shippingFee: DELIVERY_FEE,
           note: form.note,
           paymentMethod: "Cash On Delivery (COD)",
           eventId: purchaseEventId,
@@ -182,9 +188,9 @@ export function CheckoutClient() {
             id: i.id,
             quantity: i.quantity,
             item_price: i.price,
-            title: i.name,
+            title: i.variantTitle ? `${i.name} (${i.variantTitle})` : i.name,
           })),
-          value: data.order?.totalPrice ? Number(data.order.totalPrice) : getTotalPrice(),
+          value: data.order?.totalPrice ? Number(data.order.totalPrice) : totalAmount,
           currency: "PKR",
           num_items: items.reduce((acc, item) => acc + item.quantity, 0),
           order_id: data.order?.orderNumber || data.order?.orderId,
@@ -256,6 +262,11 @@ export function CheckoutClient() {
               <div className={styles.costRow} style={{ marginBottom: "10px" }}>
                 <span>Estimated Delivery</span>
                 <span style={{ color: "#15803d", fontWeight: 700 }}>3–5 Working Days</span>
+              </div>
+
+              <div className={styles.costRow} style={{ marginBottom: "10px" }}>
+                <span>Delivery Charges</span>
+                <span style={{ color: "var(--ink, #20201D)", fontWeight: 600 }}>Rs. {DELIVERY_FEE} (Standard Nationwide)</span>
               </div>
 
               <div className={styles.costRow} style={{ marginTop: "16px", paddingTop: "14px", borderTop: "1px solid rgba(32,32,29,0.08)" }}>
@@ -476,7 +487,7 @@ export function CheckoutClient() {
                       </div>
                       <div className={styles.itemDetails}>
                         <div className={styles.itemName}>{item.name}</div>
-                        <div className={styles.itemSub}>Handcrafted Heritage Edition</div>
+                        <div className={styles.itemSub}>{item.variantTitle || "Handcrafted Heritage Edition"}</div>
                       </div>
                       <div className={styles.itemPrice}>
                         Rs. {(item.price * item.quantity).toLocaleString()}
@@ -488,17 +499,17 @@ export function CheckoutClient() {
                 <div className={styles.costBreakdown}>
                   <div className={styles.costRow}>
                     <span>Subtotal</span>
-                    <span>Rs. {getTotalPrice().toLocaleString()}</span>
+                    <span>Rs. {subtotal.toLocaleString()}</span>
                   </div>
                   <div className={styles.costRow}>
                     <span>Delivery Charges</span>
-                    <span className={styles.freeShipping}>FREE (Nationwide)</span>
+                    <span className={styles.deliveryFee}>Rs. {DELIVERY_FEE.toLocaleString()} (Nationwide)</span>
                   </div>
                 </div>
 
                 <div className={styles.totalRow}>
                   <span className={styles.totalLabel}>Total Due</span>
-                  <span className={styles.totalAmount}>Rs. {getTotalPrice().toLocaleString()}</span>
+                  <span className={styles.totalAmount}>Rs. {totalAmount.toLocaleString()}</span>
                 </div>
 
                 <button
@@ -510,7 +521,7 @@ export function CheckoutClient() {
                 </button>
 
                 <div className={styles.guaranteeRow}>
-                  <Truck size={14} /> Free 3–5 Day Insured Delivery across Pakistan
+                  <Truck size={14} /> Insured 3–5 Day Delivery across Pakistan (Rs. 199)
                 </div>
                 <div className={styles.guaranteeRow}>
                   <ShieldCheck size={14} /> 100% Quality Inspected before dispatch

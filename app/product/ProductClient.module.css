@@ -157,6 +157,17 @@
   font-weight: 500;
 }
 
+.discountBadge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #B42318;
+  background-color: #FEF3F2;
+  border: 1px solid rgba(180, 35, 24, 0.15);
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
 .codBadge {
   background-color: rgba(32, 32, 29, 0.06);
   color: var(--ink);
@@ -230,9 +241,9 @@
 }
 
 .btnCart {
-  background-color: var(--ink);
+  background-color: var(--magenta);
   color: var(--white);
-  border: 1px solid var(--ink);
+  border: 2px solid var(--magenta);
   cursor: pointer;
   padding: 16px 20px;
   border-radius: 6px;
@@ -244,7 +255,7 @@
 }
 
 .btnCart:hover {
-  background-color: #333330;
+  background-color: var(--magenta);
   box-shadow: 0 6px 18px rgba(32, 32, 29, 0.15);
 }
 
@@ -253,8 +264,8 @@
   align-items: center;
   justify-content: center;
   background-color: transparent;
-  color: var(--ink);
-  border: 2px solid var(--ink);
+  color: var(--magenta);
+  border: 2px solid var(--magenta);
   cursor: pointer;
   padding: 16px 20px;
   border-radius: 6px;
@@ -266,7 +277,7 @@
 }
 
 .btnBuy:hover {
-  background-color: var(--ink);
+  background-color: var(--magenta);
   color: var(--white);
   box-shadow: 0 6px 18px rgba(32, 32, 29, 0.15);
 }
@@ -405,4 +416,161 @@
   .accordionDesc {
     padding-left: 18px;
   }
+}
+
+/* ── Bundle Offers Selector ── */
+.bundleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.bundleHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.bundleLabel {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.bundleSub {
+  font-size: 11.5px;
+  color: #B42318;
+  font-weight: 600;
+}
+
+.bundleGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+@media (max-width: 540px) {
+  .bundleGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bundleCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background-color: rgba(255, 255, 255, 0.75);
+  border: 1.5px solid var(--border-cream);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 72px;
+}
+
+.bundleCard:hover {
+  background-color: #FFFFFF;
+  border-color: rgba(200, 148, 58, 0.4);
+  transform: translateY(-1px);
+}
+
+.bundleCardActive {
+  background-color: #FFFDF9;
+  border-color: var(--ink);
+  box-shadow: 0 4px 14px rgba(32, 32, 29, 0.08);
+}
+
+.bundleTag {
+  position: absolute;
+  top: -8px;
+  right: 10px;
+  background-color: var(--ink);
+  color: #FAF7F2;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.bundleRadio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.radioCircle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid #C4BEB4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.radioCircleActive {
+  border-color: var(--ink);
+  background-color: var(--ink);
+}
+
+.radioCircleActive::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #FAF7F2;
+}
+
+.bundleTitleWrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.bundleTitle {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.bundleDiscountPill {
+  font-size: 10px;
+  font-weight: 800;
+  color: #B42318;
+  background-color: #FEF3F2;
+  border: 1px solid rgba(180, 35, 24, 0.15);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.bundlePriceWrap {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding-left: 24px;
+}
+
+.bundlePrice {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.bundleCompare {
+  font-size: 11.5px;
+  color: #8C867A;
+  text-decoration: line-through;
 }

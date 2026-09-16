@@ -187,6 +187,10 @@ export interface CreateOrderInput {
     price: number;
     variantId?: string;
   }[];
+  shippingLine?: {
+    title: string;
+    price: number;
+  };
   note?: string;
   paymentMethod?: string;
 }
@@ -239,7 +243,8 @@ export async function placeShopifyOrder(input: CreateOrderInput): Promise<Create
   // If in mock or development simulation mode
   if (shop === 'mock.shop' || (!CLIENT_ID && !STATIC_ACCESS_TOKEN)) {
     const mockOrderNumber = `#ITM-${Math.floor(1000 + Math.random() * 9000)}`;
-    const totalAmount = input.lineItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const shippingFee = input.shippingLine ? input.shippingLine.price : 199;
+    const totalAmount = input.lineItems.reduce((acc, item) => acc + item.price * item.quantity, 0) + shippingFee;
 
     return {
       orderId: `gid://shopify/Order/simulated-${Date.now()}`,
@@ -294,6 +299,17 @@ export async function placeShopifyOrder(input: CreateOrderInput): Promise<Create
   }
   if (formattedPhone) {
     draftOrderInput.phone = formattedPhone;
+  }
+  if (input.shippingLine) {
+    draftOrderInput.shippingLine = {
+      title: input.shippingLine.title || 'Standard Delivery',
+      price: input.shippingLine.price.toFixed(2),
+    };
+  } else {
+    draftOrderInput.shippingLine = {
+      title: 'Standard Delivery',
+      price: '199.00',
+    };
   }
 
   // 2. Draft Order Create Mutation
@@ -396,31 +412,57 @@ export interface StoreProduct {
     id: string;
     title: string;
     price: number;
+    compareAtPrice?: number;
     availableForSale: boolean;
     image?: string;
   }[];
 }
 
 const LOCAL_FALLBACK_PRODUCT: StoreProduct = {
-  id: "gid://shopify/Product/itminaan-handbag-default",
-  title: "Handcrafted Handbag",
-  description: "A celebration of traditional Pakistani artistry. Crafted with authentic block printing, intricate mirror work, and opulent gold tassel detailing — designed to elevate every occasion.",
-  handle: "handcrafted-handbag",
+  id: "gid://shopify/Product/9620658684136",
+  title: "Crafted Handbag",
+  description: "Handcrafted handbag featuring traditional block printing and premium mirror work. Designed to add a unique touch to weddings, parties and special occasions.",
+  handle: "crafted-handbag",
   price: 1299,
   compareAtPrice: 1899,
   images: [
-    { url: "/images/bag-front.jpg", altText: "Handcrafted Handbag — Front View" },
-    { url: "/images/bag-top.jpg", altText: "Handcrafted Handbag — Top View" },
-    { url: "/images/bag-collection.jpg", altText: "Handcrafted Handbag — Collection" },
-    { url: "/images/handbag-detail.jpg", altText: "Handcrafted Handbag — Detail" },
+    { url: "https://cdn.shopify.com/s/files/1/0808/9508/2728/files/ProductImage2.jpg?v=1789559705", altText: "Crafted Handbag" },
+    { url: "https://cdn.shopify.com/s/files/1/0808/9508/2728/files/ProductImage3.jpg?v=1789559705", altText: "Crafted Handbag" },
+    { url: "https://cdn.shopify.com/s/files/1/0808/9508/2728/files/Product_Image_4.jpg?v=1789559745", altText: "Crafted Handbag" },
+    { url: "https://cdn.shopify.com/s/files/1/0808/9508/2728/files/Product_Image_1.jpg?v=1789559745", altText: "Crafted Handbag" },
   ],
   variants: [
     {
-      id: "gid://shopify/ProductVariant/itminaan-handbag-v1",
-      title: "Default Title",
+      id: "gid://shopify/ProductVariant/49071507669224",
+      title: "1 Bag",
       price: 1299,
+      compareAtPrice: 1884,
       availableForSale: true,
-      image: "/images/bag-front.jpg",
+      image: "https://cdn.shopify.com/s/files/1/0808/9508/2728/files/ProductImage2.jpg?v=1789559705",
+    },
+    {
+      id: "gid://shopify/ProductVariant/49071507701992",
+      title: "2 Bags",
+      price: 1999,
+      compareAtPrice: 2999,
+      availableForSale: true,
+      image: "https://cdn.shopify.com/s/files/1/0808/9508/2728/files/ProductImage2.jpg?v=1789559705",
+    },
+    {
+      id: "gid://shopify/ProductVariant/49071507734760",
+      title: "3 Bags",
+      price: 2499,
+      compareAtPrice: 4199,
+      availableForSale: true,
+      image: "https://cdn.shopify.com/s/files/1/0808/9508/2728/files/ProductImage2.jpg?v=1789559705",
+    },
+    {
+      id: "gid://shopify/ProductVariant/49071507767528",
+      title: "5 Bags",
+      price: 3399,
+      compareAtPrice: 5999,
+      availableForSale: true,
+      image: "https://cdn.shopify.com/s/files/1/0808/9508/2728/files/ProductImage2.jpg?v=1789559705",
     },
   ],
 };
@@ -442,11 +484,13 @@ function formatAdminProduct(node: any): StoreProduct {
     id: e.node.id,
     title: e.node.title,
     price: parseFloat(e.node.price) || 1299,
+    compareAtPrice: e.node.compareAtPrice ? parseFloat(e.node.compareAtPrice) : undefined,
     availableForSale: e.node.availableForSale ?? true,
     image: e.node.image?.url || rawImages[0]?.url,
   }));
 
   const mainPrice = variants[0]?.price || (node.variants?.edges?.[0]?.node?.price ? parseFloat(node.variants.edges[0].node.price) : 1299);
+  const mainCompareAt = variants[0]?.compareAtPrice || (node.variants?.edges?.[0]?.node?.compareAtPrice ? parseFloat(node.variants.edges[0].node.compareAtPrice) : undefined);
 
   return {
     id: node.id,
@@ -454,6 +498,7 @@ function formatAdminProduct(node: any): StoreProduct {
     description: node.description || "",
     handle: node.handle || "handcrafted-handbag",
     price: mainPrice,
+    compareAtPrice: mainCompareAt,
     images: rawImages.length > 0 ? rawImages : LOCAL_FALLBACK_PRODUCT.images,
     variants: variants.length > 0 ? variants : LOCAL_FALLBACK_PRODUCT.variants,
   };
@@ -490,6 +535,7 @@ export async function fetchAdminProducts(first = 10): Promise<StoreProduct[]> {
                   id
                   title
                   price
+                  compareAtPrice
                   availableForSale
                   image {
                     url
@@ -547,6 +593,7 @@ export async function fetchAdminProduct(handle?: string): Promise<StoreProduct> 
                 id
                 title
                 price
+                compareAtPrice
                 availableForSale
                 image {
                   url
@@ -598,6 +645,7 @@ function simulateMockAdminResponse(query: string, variables: Record<string, any>
                     id: v.id,
                     title: v.title,
                     price: v.price.toString(),
+                    compareAtPrice: v.compareAtPrice?.toString(),
                     availableForSale: v.availableForSale,
                     image: { url: v.image, altText: v.title },
                   },

@@ -296,6 +296,11 @@
   font-weight: 700;
 }
 
+.deliveryFee {
+  color: var(--ink, #20201D);
+  font-weight: 700;
+}
+
 .totalRow {
   display: flex;
   justify-content: space-between;

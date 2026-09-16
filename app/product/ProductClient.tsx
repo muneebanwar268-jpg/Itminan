@@ -55,18 +55,35 @@ export function ProductClient({ product }: ProductClientProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0); // First open by default
   const { addItem, openCart } = useCartStore();
 
+  const fallbackVariants: NonNullable<StoreProduct['variants']> = [
+    { id: "gid://shopify/ProductVariant/49071507669224", title: "1 Bag", price: 1299, compareAtPrice: 1884, availableForSale: true, image: "/images/bag-front.jpg" },
+    { id: "gid://shopify/ProductVariant/49071507701992", title: "2 Bags", price: 1999, compareAtPrice: 2999, availableForSale: true, image: "/images/bag-front.jpg" },
+    { id: "gid://shopify/ProductVariant/49071507734760", title: "3 Bags", price: 2499, compareAtPrice: 4199, availableForSale: true, image: "/images/bag-front.jpg" },
+    { id: "gid://shopify/ProductVariant/49071507767528", title: "5 Bags", price: 3399, compareAtPrice: 5999, availableForSale: true, image: "/images/bag-front.jpg" },
+  ];
+
+  const variants = (product?.variants && product.variants.length > 0)
+    ? product.variants
+    : fallbackVariants;
+
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+  const activeVariant = variants[selectedVariantIndex] || variants[0];
+
   const title = product?.title || "Handcrafted Handbag";
   const description = product?.description || "A celebration of traditional Pakistani artistry. Crafted with authentic block printing, intricate mirror work, and opulent gold tassel detailing — designed to elevate every occasion.";
-  const price = product?.price || 1299;
-  const compareAtPrice = product?.compareAtPrice || (price > 1000 ? Math.round(price * 1.45) : 1899);
+  const price = activeVariant.price;
+  const compareAtPrice = activeVariant.compareAtPrice || (price > 1000 ? Math.round(price * 1.45) : 1884);
+  const discountPercent = compareAtPrice > price
+    ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100)
+    : 0;
   
   const productImages = (product?.images && product.images.length > 0)
     ? product.images.map((img) => ({ src: img.url, alt: img.altText || title }))
     : fallbackImages;
 
   const currentImage = productImages[selectedImage] || productImages[0];
-  const primaryVariant = product?.variants?.[0];
-  const productId = primaryVariant?.id || product?.id || "itminaan-handbag";
+  const productId = activeVariant.id;
+  const variantTitle = activeVariant.title;
 
   // Track ViewContent on mount
   useEffect(() => {
@@ -89,13 +106,14 @@ export function ProductClient({ product }: ProductClientProps) {
     addItem({
       id: productId,
       name: title,
+      variantTitle: variantTitle,
       price: price,
       quantity: qty,
-      image: currentImage.src,
+      image: activeVariant.image || currentImage.src,
     });
 
     trackMetaEvent("AddToCart", {
-      content_name: title,
+      content_name: `${title} (${variantTitle})`,
       content_type: "product",
       content_ids: [productId],
       value: price * qty,
@@ -104,7 +122,7 @@ export function ProductClient({ product }: ProductClientProps) {
         id: productId,
         quantity: qty,
         item_price: price,
-        title: title,
+        title: `${title} (${variantTitle})`,
       }],
       num_items: qty,
     });
@@ -116,13 +134,14 @@ export function ProductClient({ product }: ProductClientProps) {
     addItem({
       id: productId,
       name: title,
+      variantTitle: variantTitle,
       price: price,
       quantity: qty,
-      image: currentImage.src,
+      image: activeVariant.image || currentImage.src,
     });
 
     trackMetaEvent("AddToCart", {
-      content_name: title,
+      content_name: `${title} (${variantTitle})`,
       content_type: "product",
       content_ids: [productId],
       value: price * qty,
@@ -131,13 +150,13 @@ export function ProductClient({ product }: ProductClientProps) {
         id: productId,
         quantity: qty,
         item_price: price,
-        title: title,
+        title: `${title} (${variantTitle})`,
       }],
       num_items: qty,
     });
 
     trackMetaEvent("InitiateCheckout", {
-      content_name: title,
+      content_name: `${title} (${variantTitle})`,
       content_type: "product",
       content_ids: [productId],
       value: price * qty,
@@ -146,7 +165,7 @@ export function ProductClient({ product }: ProductClientProps) {
         id: productId,
         quantity: qty,
         item_price: price,
-        title: title,
+        title: `${title} (${variantTitle})`,
       }],
       num_items: qty,
     });
@@ -221,8 +240,60 @@ export function ProductClient({ product }: ProductClientProps) {
               {compareAtPrice > price && (
                 <span className={styles.originalPrice}>Rs. {compareAtPrice.toLocaleString()}</span>
               )}
+              {discountPercent > 0 && (
+                <span className={styles.discountBadge}>SAVE {discountPercent}%</span>
+              )}
             </div>
             <span className={styles.codBadge}>✓ Cash on Delivery Available</span>
+          </div>
+
+          {/* Bundle & Save Offers Selector */}
+          <div className={styles.bundleSection}>
+            <div className={styles.bundleHeader}>
+              <span className={styles.bundleLabel}>Choose Bundle &amp; Save:</span>
+              <span className={styles.bundleSub}>Special Bundle Offer</span>
+            </div>
+
+            <div className={styles.bundleGrid}>
+              {variants.map((v, idx) => {
+                const isSelected = selectedVariantIndex === idx;
+                const vCompare = v.compareAtPrice;
+                const vDiscount = vCompare && vCompare > v.price
+                  ? Math.round(((vCompare - v.price) / vCompare) * 100)
+                  : null;
+
+                let tag = null;
+                if (v.title.includes("2")) tag = "MOST EFFICIENT";
+                else if (v.title.includes("3")) tag = "BEST VALUE";
+                else if (v.title.includes("5")) tag = "MEGA SAVER";
+
+                return (
+                  <button
+                    key={v.id || idx}
+                    type="button"
+                    onClick={() => setSelectedVariantIndex(idx)}
+                    className={`${styles.bundleCard} ${isSelected ? styles.bundleCardActive : ""}`}
+                  >
+                    {tag && <span className={styles.bundleTag}>{tag}</span>}
+                    <div className={styles.bundleRadio}>
+                      <div className={`${styles.radioCircle} ${isSelected ? styles.radioCircleActive : ""}`} />
+                      <div className={styles.bundleTitleWrap}>
+                        <span className={styles.bundleTitle}>{v.title}</span>
+                        {vDiscount && (
+                          <span className={styles.bundleDiscountPill}>{vDiscount}% OFF</span>
+                        )}
+                      </div>
+                    </div>
+                    <div className={styles.bundlePriceWrap}>
+                      <span className={styles.bundlePrice}>Rs. {v.price.toLocaleString()}</span>
+                      {vCompare && vCompare > v.price && (
+                        <span className={styles.bundleCompare}>Rs. {vCompare.toLocaleString()}</span>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Quantity */}
@@ -249,7 +320,7 @@ export function ProductClient({ product }: ProductClientProps) {
           <div className={styles.benefits}>
             <div className={styles.benefitItem}>
               <Truck size={16} className={styles.benefitIcon} />
-              <span>Free COD Delivery across Pakistan (3–5 Working Days)</span>
+              <span>Delivery Charges: Rs. 199 (Nationwide 3–5 Working Days)</span>
             </div>
             <div className={styles.benefitItem}>
               <ShieldCheck size={16} className={styles.benefitIcon} />
