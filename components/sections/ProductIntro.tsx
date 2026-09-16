@@ -225,8 +225,8 @@ export function ProductIntro({ initialProduct }: ProductIntroProps) {
             <div className={styles.featureCard}>
               <Palette size={16} className={styles.featureIcon} />
               <div className={styles.featureText}>
-                <strong>Traditional Block Printing</strong>
-                <span>Hand-pressed regional floral motifs</span>
+                <strong>Chain Attached</strong>
+                <span>Golden Chain Attached for easy carry</span>
               </div>
             </div>
             <div className={styles.featureCard}>

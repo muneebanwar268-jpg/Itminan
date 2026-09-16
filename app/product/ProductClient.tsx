@@ -21,8 +21,8 @@ const productFeatures = [
   { 
     id: "craft",
     icon: Palette,
-    title: "Traditional Block Printing", 
-    desc: "Each handbag features authentic Pakistani block printing — a centuries-old heritage craft with vibrant geometric & floral motifs." 
+    title: "Chain Attached", 
+    desc: "Golden Chain Attached for easy carry." 
   },
   { 
     id: "shisha",
