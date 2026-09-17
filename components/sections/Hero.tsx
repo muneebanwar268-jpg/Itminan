@@ -40,7 +40,7 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 0.6 }}
             >
-              <span>✨ Mirror Work & Velvet</span>
+              <span>✨ Mirror work with tassels</span>
             </motion.div>
           </div>
         </motion.div>
@@ -96,20 +96,20 @@ export function Hero() {
             </div>
 
             <div className={styles.trustBadges}>
-              <div className={styles.trustItem}>
+              {/* <div className={styles.trustItem}>
                 <span className={styles.trustIcon}>🚚</span>
                 <span>Rs. 199 Delivery</span>
-              </div>
+              </div> */}
               <span className={styles.trustDivider}>•</span>
               <div className={styles.trustItem}>
                 <span className={styles.trustIcon}>💵</span>
                 <span>Cash on Delivery</span>
               </div>
               <span className={styles.trustDivider}>•</span>
-              <div className={styles.trustItem}>
+              {/* <div className={styles.trustItem}>
                 <span className={styles.trustIcon}>⭐</span>
                 <span>4.9/5 Rating</span>
-              </div>
+              </div> */}
             </div>
           </motion.div>
         </div>

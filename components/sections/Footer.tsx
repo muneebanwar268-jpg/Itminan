@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import styles from "./Footer.module.css";
 
 function InstagramIcon() {
@@ -85,8 +86,8 @@ export function Footer() {
             © {new Date().getFullYear()} ITMINAAN. All rights reserved.
           </span>
           <div className={styles.legal}>
-            <a href="#" className={styles.legalLink}>Privacy Policy</a>
-            <a href="#" className={styles.legalLink}>Shipping &amp; Returns</a>
+            <Link href="/privacy-policy" className={styles.legalLink}>Privacy Policy</Link>
+            <Link href="/refund-policy" className={styles.legalLink}>Return &amp; Refund Policy</Link>
             <a href="#" className={styles.legalLink}>Terms &amp; Conditions</a>
           </div>
         </div>

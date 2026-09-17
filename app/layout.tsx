@@ -7,6 +7,7 @@ import { CartDrawer } from "@/components/ecommerce/CartDrawer";
 import { Navbar } from "@/components/navigation/Navbar";
 import { AnnouncementBar } from "@/components/sections/AnnouncementBar";
 import { MetaPixel } from "@/components/analytics/MetaPixel";
+import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
 
 const geistSans = Geist({
   variable: "--font-sans",
@@ -48,6 +49,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <CartDrawer />
+          <WhatsAppFloat />
         </SmoothScrollProvider>
       </body>
     </html>
