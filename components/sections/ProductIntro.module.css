@@ -49,9 +49,16 @@
 }
 
 .thumbnails {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .thumbnails {
+    gap: 8px;
+  }
 }
 
 .thumb {
@@ -62,9 +69,8 @@
   padding: 0;
   cursor: pointer;
   aspect-ratio: 1 / 1;
-  width: 72px;
-  height: 72px;
-  flex-shrink: 0;
+  width: 100%;
+  height: auto;
   transition: border-color 0.2s, transform 0.2s;
 }
 
