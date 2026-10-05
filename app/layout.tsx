@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ITMINAAN | Handcrafted Pakistani Handbags",
     description:
-      "Traditional block printing, mirror work & tassel detailing. Delivered across Pakistan. Rs. 1,299.",
+      "Traditional block printing, mirror work & tassel detailing. Delivered across Pakistan. Rs. 1,300.",
     type: "website",
   },
 };

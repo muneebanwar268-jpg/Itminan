@@ -89,7 +89,7 @@ export function Hero() {
               </Link>
 
               {/* <div className={styles.priceContainer}>
-                <span className={styles.priceCurrent}>Rs. 1,299</span>
+                <span className={styles.priceCurrent}>Rs. 1,300</span>
                 <span className={styles.priceOld}>Rs. 1,899</span>
                 <span className={styles.discountPill}>SAVE 31%</span>
               </div> */}

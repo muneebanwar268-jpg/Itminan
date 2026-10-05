@@ -18,7 +18,7 @@ const slides = [
     bg: "#3A2218",   // warm espresso
   },
   {
-    text: "🛍️  Shop ITMINAAN — Rs. 1,299",
+    text: "🛍️  Shop ITMINAAN — Rs. 1,300",
     bg: "#2D1A0E",   // dark amber-brown
   },
 ];
