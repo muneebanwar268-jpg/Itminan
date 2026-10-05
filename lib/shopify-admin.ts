@@ -84,6 +84,7 @@ export async function getAdminAccessToken(forceRefresh = false): Promise<string>
           client_secret: CLIENT_SECRET,
           grant_type: 'client_credentials',
         }),
+        cache: 'no-store',
       });
 
       if (!res.ok) {
@@ -141,6 +142,7 @@ export async function shopifyAdminGraphQL<T = any>(
       'X-Shopify-Access-Token': token,
     },
     body: JSON.stringify({ query, variables }),
+    cache: 'no-store',
   });
 
   // If token expired (401 Unauthorized), force token refresh and retry once
@@ -243,7 +245,7 @@ export async function placeShopifyOrder(input: CreateOrderInput): Promise<Create
   // If in mock or development simulation mode
   if (shop === 'mock.shop' || (!CLIENT_ID && !STATIC_ACCESS_TOKEN)) {
     const mockOrderNumber = `#ITM-${Math.floor(1000 + Math.random() * 9000)}`;
-    const shippingFee = input.shippingLine ? input.shippingLine.price : 199;
+    const shippingFee = input.shippingLine ? input.shippingLine.price : 200;
     const totalAmount = input.lineItems.reduce((acc, item) => acc + item.price * item.quantity, 0) + shippingFee;
 
     return {

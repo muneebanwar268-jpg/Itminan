@@ -11,7 +11,7 @@ const faqs = [
   },
   {
     q: "💰 What are the delivery charges?",
-    a: "We charge a standard delivery fee of Rs. 199 across Pakistan with safe and insured Cash on Delivery.",
+    a: "We charge a standard delivery fee of Rs. 200 across Pakistan with safe and insured Cash on Delivery.",
   },
   {
     q: "📦 How long will my order take to arrive?",

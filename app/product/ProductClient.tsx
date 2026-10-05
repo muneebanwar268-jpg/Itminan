@@ -11,36 +11,36 @@ import { trackMetaEvent } from "@/lib/pixel";
 import styles from "./ProductClient.module.css";
 
 const fallbackImages = [
-  { src: "/images/bag-front.jpg",      alt: "Handcrafted Handbag — Front View" },
-  { src: "/images/bag-top.jpg",        alt: "Handcrafted Handbag — Top View" },
+  { src: "/images/bag-front.jpg", alt: "Handcrafted Handbag — Front View" },
+  { src: "/images/bag-top.jpg", alt: "Handcrafted Handbag — Top View" },
   { src: "/images/bag-collection.jpg", alt: "Handcrafted Handbag — Collection" },
   { src: "/images/handbag-detail.jpg", alt: "Handcrafted Handbag — Detail" },
 ];
 
 const productFeatures = [
-  { 
+  {
     id: "craft",
     icon: Palette,
-    title: "Chain Attached", 
-    desc: "Golden Chain Attached for easy carry." 
+    title: "Chain Attached",
+    desc: "Golden Chain Attached for easy carry."
   },
-  { 
+  {
     id: "shisha",
     icon: Sparkles,
-    title: "Mirror & Shisha Work", 
-    desc: "Intricately hand-embroidered shisha mirror work and shimmering bead accents that reflect light with subtle radiance." 
+    title: "Mirror & Shisha Work",
+    desc: "Intricately hand-embroidered shisha mirror work and shimmering bead accents that reflect light with subtle radiance."
   },
-  { 
+  {
     id: "tassels",
     icon: Gem,
-    title: "Gold Tassel & Pearl Detailing", 
-    desc: "Accented with rich gold metallic tassels and delicate beaded edges for an opulent festive finish." 
+    title: "Gold Tassel & Pearl Detailing",
+    desc: "Accented with rich gold metallic tassels and delicate beaded edges for an opulent festive finish."
   },
-  { 
+  {
     id: "dimensions",
     icon: Ruler,
-    title: "Size & Dimensions", 
-    desc: "Measures ~10\" × 10\". Perfectly sized to carry your smartphone, cards, makeup, and daily essentials with effortless elegance." 
+    title: "Size & Dimensions",
+    desc: "Measures ~10\" × 10\". Perfectly sized to carry your smartphone, cards, makeup, and daily essentials with effortless elegance."
   },
 ];
 
@@ -48,12 +48,32 @@ interface ProductClientProps {
   product?: StoreProduct;
 }
 
-export function ProductClient({ product }: ProductClientProps) {
+export function ProductClient({ product: initialProduct }: ProductClientProps) {
   const router = useRouter();
+  const [product, setProduct] = useState<StoreProduct | undefined>(initialProduct);
   const [selectedImage, setSelectedImage] = useState(0);
   const [qty, setQty] = useState(1);
   const [openIndex, setOpenIndex] = useState<number | null>(0); // First open by default
   const { addItem, openCart, closeCart } = useCartStore();
+
+  useEffect(() => {
+    if (initialProduct) {
+      setProduct(initialProduct);
+    }
+  }, [initialProduct]);
+
+  useEffect(() => {
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.product) {
+          setProduct(data.product);
+        }
+      })
+      .catch((err) => {
+        console.warn("[ProductClient] Could not sync latest product:", err);
+      });
+  }, []);
 
   const fallbackVariants: NonNullable<StoreProduct['variants']> = [
     { id: "gid://shopify/ProductVariant/49071507669224", title: "1 Bag", price: 1299, compareAtPrice: 1884, availableForSale: true, image: "/images/bag-front.jpg" },
@@ -76,7 +96,7 @@ export function ProductClient({ product }: ProductClientProps) {
   const discountPercent = compareAtPrice > price
     ? Math.round(((compareAtPrice - price) / compareAtPrice) * 100)
     : 0;
-  
+
   const productImages = (product?.images && product.images.length > 0)
     ? product.images.map((img) => ({ src: img.url, alt: img.altText || title }))
     : fallbackImages;
@@ -208,12 +228,12 @@ export function ProductClient({ product }: ProductClientProps) {
                 className={`${styles.thumb} ${selectedImage === i ? styles.thumbActive : ""}`}
                 aria-label={img.alt}
               >
-                <Image 
-                  src={img.src} 
-                  alt={img.alt} 
-                  width={100} 
-                  height={100} 
-                  className={styles.thumbImg} 
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  width={100}
+                  height={100}
+                  className={styles.thumbImg}
                   unoptimized={img.src.startsWith('http')}
                 />
               </button>
@@ -324,7 +344,7 @@ export function ProductClient({ product }: ProductClientProps) {
           <div className={styles.benefits}>
             <div className={styles.benefitItem}>
               <Truck size={16} className={styles.benefitIcon} />
-              <span>Delivery Charges: Rs. 199 (Nationwide 3–5 Working Days)</span>
+              <span>Delivery Charges: Rs. 200 (Nationwide 3–5 Working Days)</span>
             </div>
             <div className={styles.benefitItem}>
               <ShieldCheck size={16} className={styles.benefitIcon} />
@@ -361,7 +381,7 @@ export function ProductClient({ product }: ProductClientProps) {
                         <ChevronDown size={17} strokeWidth={1.75} />
                       </motion.span>
                     </button>
-                    
+
                     <AnimatePresence initial={false}>
                       {isOpen && (
                         <motion.div

@@ -41,7 +41,7 @@ function formatPakistaniPhone(input: string): string {
   return `+92${cleaned}`;
 }
 
-const DELIVERY_FEE = 199;
+const DELIVERY_FEE = 200;
 
 export function CheckoutClient() {
   const { items, getTotalPrice, clearCart } = useCartStore();
@@ -511,7 +511,7 @@ export function CheckoutClient() {
                 </button>
 
                 <div className={styles.guaranteeRow}>
-                  <Truck size={14} /> Insured 3–5 Day Delivery across Pakistan (Rs. 199)
+                  <Truck size={14} /> Insured 3–5 Day Delivery across Pakistan (Rs. 200)
                 </div>
                 <div className={styles.guaranteeRow}>
                   <ShieldCheck size={14} /> 100% Quality Inspected before dispatch

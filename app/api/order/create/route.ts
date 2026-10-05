@@ -29,7 +29,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const deliveryPrice = typeof shippingFee === 'number' ? shippingFee : 199;
+    const deliveryPrice = typeof shippingFee === 'number' ? shippingFee : 200;
 
     // 2. Prepare order input
     const orderInput: CreateOrderInput = {

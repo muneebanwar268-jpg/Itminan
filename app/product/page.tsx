@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   description: 'Order your beautiful handcrafted Pakistani handbag. Traditional block printing, mirror work & tassel detailing. COD available across Pakistan.',
 };
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function ProductPage() {
   const product = await fetchAdminProduct();
 

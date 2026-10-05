@@ -373,7 +373,7 @@ export function ProductIntro({ initialProduct }: ProductIntroProps) {
           <div className={styles.assuranceBanner}>
             <div className={styles.assuranceItem}>
               <Truck size={16} className={styles.assuranceIcon} />
-              <span>Delivery Charges: Rs. 199 (Nationwide 3–5 Days)</span>
+              <span>Delivery Charges: Rs. 200 (Nationwide 3–5 Days)</span>
             </div>
             <div className={styles.assuranceDivider} />
             <div className={styles.assuranceItem}>
