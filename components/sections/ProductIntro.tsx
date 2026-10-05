@@ -11,8 +11,8 @@ import { trackMetaEvent } from "@/lib/pixel";
 import styles from "./ProductIntro.module.css";
 
 const fallbackImages = [
-  { src: "/images/bag-front.jpg",      alt: "Handcrafted Handbag — Front View" },
-  { src: "/images/bag-top.jpg",        alt: "Handcrafted Handbag — Top View" },
+  { src: "/images/bag-front.jpg", alt: "Handcrafted Handbag — Front View" },
+  { src: "/images/bag-top.jpg", alt: "Handcrafted Handbag — Top View" },
   { src: "/images/bag-collection.jpg", alt: "Handcrafted Handbag — Full Collection" },
   { src: "/images/handbag-detail.jpg", alt: "Handcrafted Handbag — Detail" },
 ];
@@ -35,12 +35,12 @@ export function ProductIntro({ initialProduct }: ProductIntroProps) {
         .then((data) => {
           if (data.product) setProduct(data.product);
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   }, [initialProduct]);
 
   const fallbackVariants: NonNullable<StoreProduct['variants']> = [
-    { id: "gid://shopify/ProductVariant/49071507669224", title: "1 Bag", price: 1299, compareAtPrice: 1884, availableForSale: true, image: "/images/bag-front.jpg" },
+    { id: "gid://shopify/ProductVariant/49071507669224", title: "1 Bag", price: 1300, compareAtPrice: 1884, availableForSale: true, image: "/images/bag-front.jpg" },
     { id: "gid://shopify/ProductVariant/49071507701992", title: "2 Bags", price: 1999, compareAtPrice: 2999, availableForSale: true, image: "/images/bag-front.jpg" },
     { id: "gid://shopify/ProductVariant/49071507734760", title: "3 Bags", price: 2499, compareAtPrice: 4199, availableForSale: true, image: "/images/bag-front.jpg" },
     { id: "gid://shopify/ProductVariant/49071507767528", title: "5 Bags", price: 3399, compareAtPrice: 5999, availableForSale: true, image: "/images/bag-front.jpg" },
@@ -241,7 +241,7 @@ export function ProductIntro({ initialProduct }: ProductIntroProps) {
             </div>
             <div className={styles.stockBadge}>
               <span className={styles.stockDot} />
-             COD Available
+              COD Available
             </div>
           </div>
 

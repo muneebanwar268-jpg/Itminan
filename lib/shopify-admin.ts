@@ -212,7 +212,7 @@ export interface CreatedOrderResult {
 export function normalizeShopifyPhone(phone: string): string {
   if (!phone) return '';
   let cleaned = phone.trim().replace(/[^\d+]/g, '');
-  
+
   if (cleaned.startsWith('+92')) {
     return cleaned;
   }
@@ -425,7 +425,7 @@ const LOCAL_FALLBACK_PRODUCT: StoreProduct = {
   title: "Crafted Handbag",
   description: "Handcrafted handbag featuring traditional block printing and premium mirror work. Designed to add a unique touch to weddings, parties and special occasions.",
   handle: "crafted-handbag",
-  price: 1299,
+  price: 1300,
   compareAtPrice: 1899,
   images: [
     { url: "https://cdn.shopify.com/s/files/1/0808/9508/2728/files/ProductImage2.jpg?v=1789559705", altText: "Crafted Handbag" },
@@ -437,7 +437,7 @@ const LOCAL_FALLBACK_PRODUCT: StoreProduct = {
     {
       id: "gid://shopify/ProductVariant/49071507669224",
       title: "1 Bag",
-      price: 1299,
+      price: 1300,
       compareAtPrice: 1884,
       availableForSale: true,
       image: "https://cdn.shopify.com/s/files/1/0808/9508/2728/files/ProductImage2.jpg?v=1789559705",
@@ -485,13 +485,13 @@ function formatAdminProduct(node: any): StoreProduct {
   const variants = (node.variants?.edges || []).map((e: any) => ({
     id: e.node.id,
     title: e.node.title,
-    price: parseFloat(e.node.price) || 1299,
+    price: parseFloat(e.node.price) || 1300,
     compareAtPrice: e.node.compareAtPrice ? parseFloat(e.node.compareAtPrice) : undefined,
     availableForSale: e.node.availableForSale ?? true,
     image: e.node.image?.url || rawImages[0]?.url,
   }));
 
-  const mainPrice = variants[0]?.price || (node.variants?.edges?.[0]?.node?.price ? parseFloat(node.variants.edges[0].node.price) : 1299);
+  const mainPrice = variants[0]?.price || (node.variants?.edges?.[0]?.node?.price ? parseFloat(node.variants.edges[0].node.price) : 1300);
   const mainCompareAt = variants[0]?.compareAtPrice || (node.variants?.edges?.[0]?.node?.compareAtPrice ? parseFloat(node.variants.edges[0].node.compareAtPrice) : undefined);
 
   return {
@@ -665,7 +665,7 @@ function simulateMockAdminResponse(query: string, variables: Record<string, any>
         draftOrder: {
           id: `gid://shopify/DraftOrder/simulated-${Date.now()}`,
           name: `#ITM-MOCK-${Math.floor(1000 + Math.random() * 9000)}`,
-          totalPrice: '1299.00',
+          totalPrice: '1300.00',
         },
         userErrors: [],
       },
@@ -682,7 +682,7 @@ function simulateMockAdminResponse(query: string, variables: Record<string, any>
             createdAt: new Date().toISOString(),
             totalPriceSet: {
               shopMoney: {
-                amount: '1299.00',
+                amount: '1300.00',
                 currencyCode: 'PKR',
               },
             },

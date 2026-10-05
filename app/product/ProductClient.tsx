@@ -76,7 +76,7 @@ export function ProductClient({ product: initialProduct }: ProductClientProps) {
   }, []);
 
   const fallbackVariants: NonNullable<StoreProduct['variants']> = [
-    { id: "gid://shopify/ProductVariant/49071507669224", title: "1 Bag", price: 1299, compareAtPrice: 1884, availableForSale: true, image: "/images/bag-front.jpg" },
+    { id: "gid://shopify/ProductVariant/49071507669224", title: "1 Bag", price: 1300, compareAtPrice: 1884, availableForSale: true, image: "/images/bag-front.jpg" },
     { id: "gid://shopify/ProductVariant/49071507701992", title: "2 Bags", price: 1999, compareAtPrice: 2999, availableForSale: true, image: "/images/bag-front.jpg" },
     { id: "gid://shopify/ProductVariant/49071507734760", title: "3 Bags", price: 2499, compareAtPrice: 4199, availableForSale: true, image: "/images/bag-front.jpg" },
     { id: "gid://shopify/ProductVariant/49071507767528", title: "5 Bags", price: 3399, compareAtPrice: 5999, availableForSale: true, image: "/images/bag-front.jpg" },

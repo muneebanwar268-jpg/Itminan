@@ -51,7 +51,7 @@ export async function POST(request: Request) {
       lineItems: items.map((item: any) => ({
         title: item.variantTitle ? `${item.name || 'Handcrafted Handbag'} (${item.variantTitle})` : (item.name || item.title || 'Handcrafted Handbag'),
         quantity: item.quantity || 1,
-        price: Number(item.price) || 1299,
+        price: Number(item.price) || 1300,
         variantId: item.variantId || item.id,
       })),
       shippingLine: {
